@@ -128,9 +128,10 @@ public:
 
 	template<typename... TArgs>
 	void fire(
-		std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>> trigger,
+		const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
 		TArgs... args)
 	{
+		internal_fire(trigger->trigger(), args...);
 	}
 
     /**
@@ -248,18 +249,18 @@ private:
 	template<typename... TArgs>
 	void internal_fire(const TTrigger& trigger, TArgs... args)
 	{
-		//auto abstract_configuration = trigger_configuration_.find(trigger);
-		//if (abstract_configuration != trigger_configuration_.end())
-		//{
-		//	typedef typename trigger_with_parameters<TTrigger, TArgs...> TParameterizedTrigger;
-		//	auto configuration =
-		//		dynamic_cast<TParameterizedTrigger>(
-		//			&abstract_configuration->second);
-		//	if (configuration == nullptr)
-		//	{
-		//		throw error("Invalid number of parameters.");
-		//	}
-		//}
+		auto abstract_configuration = trigger_configuration_.find(trigger);
+		if (abstract_configuration != trigger_configuration_.end())
+		{
+			typedef trigger_with_parameters<TTrigger, TArgs...> TParameterizedTrigger;
+			auto configuration =
+				std::dynamic_pointer_cast<TParameterizedTrigger>(
+					abstract_configuration->second);
+			if (configuration == nullptr)
+			{
+				throw error("Invalid number or type of parameters.");
+			}
+		}
 
 		auto handler = current_representation()->try_find_handler(trigger);
 		if (handler == nullptr)
@@ -277,7 +278,7 @@ private:
 			TTransition transition(source, *destination, trigger);
 			current_representation()->exit(transition);
 			set_state(transition.destination());
-			current_representation()->enter(transition);
+			current_representation()->enter(transition, args...);
 			if (on_transition_)
 			{
 				on_transition_(transition);

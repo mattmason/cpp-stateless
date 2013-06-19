@@ -47,8 +47,9 @@ public:
 		return handler;
 	}
 
+	template<typename TCallable, typename... TArgs>
 	void add_entry_action(
-		const TTrigger& trigger, const TEntryAction& entry_action)
+		const TTrigger& trigger, TCallable entry_action)
 	{
 		auto wrapped =
 			[=](const TTransition& transition)
@@ -71,19 +72,20 @@ public:
 		exit_actions_.push_back(exit_action);
 	}
 
-	void enter(const TTransition& transition) const
+	template<typename... TArgs>
+	void enter(const TTransition& transition, TArgs... args) const
 	{
 		if (transition.is_reentry())
 		{
-			execute_entry_actions(transition);
+			execute_entry_actions(transition, args...);
 		}
 		else if (!includes(transition.source()))
 		{
 			if (super_state_ != nullptr)
 			{
-				super_state_->enter(transition);
+				super_state_->enter(transition, args...);
 			}
-			execute_entry_actions(transition);
+			execute_entry_actions(transition, args...);
 		}
 	}
 
@@ -180,7 +182,8 @@ private:
 		return result;
 	}
 
-	void execute_entry_actions(const TTransition& transition) const
+	template<typename... TArgs>
+	void execute_entry_actions(const TTransition& transition, TArgs... args) const
 	{
 		for (auto& action : entry_actions_)
 		{

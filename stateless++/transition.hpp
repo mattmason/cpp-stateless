@@ -12,25 +12,25 @@ template<typename TState, typename TTrigger>
 class transition
 {
 public:
-	transition(
-		const TState& source,
-		const TState& destination,
-		const TTrigger& trigger)
-		: source_(source), destination_(destination), trigger_(trigger)
-	{}
+  transition(
+    const TState& source,
+    const TState& destination,
+    const TTrigger& trigger)
+    : source_(source), destination_(destination), trigger_(trigger)
+  {}
 
-	const TState& source() const { return source_; }
+  const TState& source() const { return source_; }
 
-	const TState& destination() const { return destination_; }
+  const TState& destination() const { return destination_; }
 
-	const TTrigger& trigger() const { return trigger_; }
+  const TTrigger& trigger() const { return trigger_; }
 
-	bool is_reentry() const { return source_ == destination_; }
-			
+  bool is_reentry() const { return source_ == destination_; }
+      
 private:
-	const TState source_;
-	const TState destination_;
-	const TTrigger trigger_;
+  const TState source_;
+  const TState destination_;
+  const TTrigger trigger_;
 };
 
 }

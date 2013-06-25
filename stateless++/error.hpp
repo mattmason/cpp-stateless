@@ -13,9 +13,9 @@ namespace stateless
 class error : public std::runtime_error
 {
 public:
-	error(const char* what)
-		: std::runtime_error(what)
-	{}
+  error(const char* what)
+    : std::runtime_error(what)
+  {}
 };
 
 }

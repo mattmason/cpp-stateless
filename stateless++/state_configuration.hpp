@@ -22,6 +22,9 @@ inline bool no_guard()
 
 }
 
+template<typename TState, typename TTrigger>
+class state_machine;
+
 /**
  * The configuration for a single state value.
  *
@@ -55,16 +58,6 @@ public:
 
 	///Signature for lookup function.
 	typedef std::function<TStateRepresentation*(const TState&)> TLookup;
-
-	/**
-	 * Construct a configuration object for a single state.
-	 * Not for client use. Configuration objects are created by the state_machine.
-	 */
-	state_configuration(
-		TStateRepresentation* representation, const TLookup& lookup)
-		: representation_(representation)
-		, lookup_(lookup)
-	{}
 
     /**
      * Accept the specified trigger and transition to the destination state.
@@ -241,6 +234,18 @@ public:
 	}
 
 private:
+	friend state_machine<TState, TTrigger>;
+	
+	/**
+	 * Construct a configuration object for a single state.
+	 * Not for client use; configuration objects are created by the state_machine.
+	 */
+	state_configuration(
+		TStateRepresentation* representation, const TLookup& lookup)
+		: representation_(representation)
+		, lookup_(lookup)
+	{}
+
 	void enforce_not_identity_transition(const TState& destination)
 	{
 		if (destination == representation_->underlying_state())

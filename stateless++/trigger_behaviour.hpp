@@ -39,7 +39,7 @@ public:
 	}
 
 private:
-	const TTrigger& trigger_;
+	const TTrigger trigger_;
 	TGuard guard_;
 	TDecision decision_;
 };

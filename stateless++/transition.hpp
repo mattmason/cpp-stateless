@@ -30,7 +30,7 @@ public:
 private:
 	const TState source_;
 	const TState destination_;
-	const TTrigger& trigger_;
+	const TTrigger trigger_;
 };
 
 }

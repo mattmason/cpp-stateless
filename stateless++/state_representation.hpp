@@ -26,14 +26,12 @@ inline abstract_entry_action::~abstract_entry_action()
 template<typename TTransition, typename... TArgs>
 struct entry_action : public abstract_entry_action
 {
-	entry_action(const std::function<void(const TTransition&, TArgs ...)>& action)
+	entry_action(const std::function<void(const TTransition&, TArgs...)>& action)
 		: execute(action)
 	{}
 	
-	std::function<void(const TTransition&, TArgs ...)> execute;
+	std::function<void(const TTransition&, TArgs...)> execute;
 };
-
-
 	
 template<typename TState, typename TTrigger>
 class state_representation
@@ -79,11 +77,11 @@ public:
 	void add_entry_action(const TTrigger& trigger, TCallable action)
 	{
 		auto wrapper =
-			[=](const TTransition& transition, TArgs&&... args)
+			[=](const TTransition& transition, TArgs... args)
 			{
 				if (transition.trigger() == trigger)
 				{
-					action(transition, std::forward<TArgs...>(args...));
+					action(transition, args...);
 				}
 			};
 		auto ea = std::make_shared<entry_action<TTransition, TArgs...>>(wrapper);
@@ -230,7 +228,7 @@ private:
 		}
 	}
 
-	const TState& state_;
+	const TState state_;
 
 	std::map<TTrigger, std::vector<TTriggerBehaviour>> trigger_behaviours_;
 	std::vector<TEntryAction> entry_actions_;

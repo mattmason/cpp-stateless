@@ -14,6 +14,7 @@ int main(int argc, char* argv[])
     bug.defer();
     bug.assign("Harry");
     bug.assign("Fred");
+	bug.resolve("Mike");
     bug.close();
 
 	std::cout << "Press enter to quit..." << std::endl;

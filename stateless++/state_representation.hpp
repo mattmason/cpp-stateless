@@ -14,13 +14,34 @@ namespace stateless
 namespace detail
 {
 
+class abstract_entry_action
+{
+public:
+	virtual ~abstract_entry_action() = 0;
+};
+
+inline abstract_entry_action::~abstract_entry_action()
+{}
+
+template<typename TTransition, typename... TArgs>
+struct entry_action : public abstract_entry_action
+{
+	entry_action(const std::function<void(const TTransition&, TArgs ...)>& action)
+		: execute(action)
+	{}
+	
+	std::function<void(const TTransition&, TArgs ...)> execute;
+};
+
+
+	
 template<typename TState, typename TTrigger>
 class state_representation
 {
 public:
 	typedef transition<TState, TTrigger> TTransition;
 	typedef trigger_behaviour<TState, TTrigger> TTriggerBehaviour;
-	typedef std::function<void(const TTransition&)> TEntryAction;
+	typedef std::shared_ptr<abstract_entry_action> TEntryAction;
 	typedef std::function<void(const TTransition&)> TExitAction;
 
 	state_representation(const TState& state)
@@ -48,23 +69,25 @@ public:
 	}
 
 	template<typename TCallable, typename... TArgs>
-	void add_entry_action(
-		const TTrigger& trigger, TCallable entry_action)
+	void add_entry_action(TCallable action)
 	{
-		auto wrapped =
-			[=](const TTransition& transition)
+		auto ea = std::make_shared<entry_action<TTransition, TArgs...>>(action);
+		entry_actions_.push_back(ea);
+	}
+
+	template<typename TCallable, typename... TArgs>
+	void add_entry_action(const TTrigger& trigger, TCallable action)
+	{
+		auto wrapper =
+			[=](const TTransition& transition, TArgs... args)
 			{
 				if (transition.trigger() == trigger)
 				{
-					entry_action(transition);
+					action(transition, std::forward<TArgs...>(args...));
 				}
 			};
-		add_entry_action(wrapped);
-	}
-
-	void add_entry_action(const TEntryAction& entry_action)
-	{
-		entry_actions_.push_back(entry_action);
+		auto ea = std::make_shared<entry_action<TTransition, TArgs...>>(wrapper);
+		entry_actions_.push_back(ea);
 	}
 
 	void add_exit_action(const TExitAction& exit_action)
@@ -187,7 +210,15 @@ private:
 	{
 		for (auto& action : entry_actions_)
 		{
-			action(transition);
+			auto ea = std::dynamic_pointer_cast<entry_action<TTransition, TArgs...>>(action);
+			if (ea != nullptr)
+			{
+				ea->execute(transition, args...);
+			}
+			else
+			{
+				throw error("Invalid entry action");
+			}
 		}
 	}
 

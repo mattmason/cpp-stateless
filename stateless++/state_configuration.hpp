@@ -173,7 +173,7 @@ public:
 	 *
      * \return This configuration object.
 	 */
-	template<typename TCallable>
+	template<typename TCallable, typename... TArgs>
 	state_configuration& on_entry(TCallable entry_action)
 	{
 		representation_->add_entry_action(entry_action);
@@ -188,7 +188,7 @@ public:
 	 *
      * \return This configuration object.
 	 */
-	template<typename TCallable>
+	template<typename TCallable, typename... TArgs>
 	state_configuration& on_entry_from(
 		const TTrigger& trigger, TCallable entry_action)
 	{
@@ -196,13 +196,12 @@ public:
 		return *this;
 	}
 
-	template<typename... TArgs, typename TCallable>
+	template<typename TCallable, typename... TArgs>
 	state_configuration& on_entry_from(
 		const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
 		TCallable entry_action)
 	{
-		auto wrapped = [](const TTransition& t){ };
-		representation_->add_entry_action(trigger->trigger(), wrapped);
+		representation_->template add_entry_action<TCallable, TArgs...>(trigger->trigger(), entry_action);
 		return *this;
 	}
 
@@ -268,7 +267,7 @@ private:
 		const TGuard& guard)
 	{
 		auto decision =
-			[&](const TState& source)
+			[=](const TState& source)
 			{
 				return &destination_state;
 			};

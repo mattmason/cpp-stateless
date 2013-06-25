@@ -28,8 +28,8 @@ public:
 	bool is_reentry() const { return source_ == destination_; }
 			
 private:
-	const TState& source_;
-	const TState& destination_;
+	const TState source_;
+	const TState destination_;
 	const TTrigger& trigger_;
 };
 

@@ -21,7 +21,7 @@ public:
 	}
 
 private:
-	const TTrigger& underlying_trigger_;
+	const TTrigger underlying_trigger_;
 };
 
 template<typename TTrigger>

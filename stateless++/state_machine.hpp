@@ -128,7 +128,7 @@ public:
 
 	template<typename... TArgs>
 	void fire(
-		const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
+		const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs ...>>& trigger,
 		TArgs... args)
 	{
 		internal_fire(trigger->trigger(), args...);

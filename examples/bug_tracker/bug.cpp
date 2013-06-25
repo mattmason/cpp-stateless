@@ -37,7 +37,7 @@ bug::bug(const std::string& title)
 		.permit(trigger::assign, state::assigned);
 		
 	state_machine_.configure(state::resolved)
-		.on_entry(std::bind(&bug::on_resolved, this, _1, _2))
+		.on_entry<std::string>(std::bind(&bug::on_resolved, this, _1, _2))
 		.permit(trigger::close, state::closed)
 		.permit(trigger::open, state::open);
 	

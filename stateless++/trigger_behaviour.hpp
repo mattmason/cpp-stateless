@@ -15,7 +15,7 @@ class trigger_behaviour
 {
 public:
 	typedef std::function<bool()> TGuard;
-	typedef std::function<const TState*(const TState&)> TDecision;
+	typedef std::function<bool(const TState&, TState&)> TDecision;
 
 	trigger_behaviour(const TTrigger& trigger, const TGuard& guard, const TDecision& decision)
 		: trigger_(trigger)
@@ -33,9 +33,9 @@ public:
 		return guard_();
 	}
 
-	const TState* results_in_transition_from(const TState& source) const
+	const bool results_in_transition_from(const TState& source, TState& destination) const
 	{
-		return decision_(source);
+		return decision_(source, destination);
 	}
 
 private:

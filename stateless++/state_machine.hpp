@@ -272,10 +272,10 @@ private:
 
 		const auto& source = state();
 
-		auto destination = handler->results_in_transition_from(source);
-		if (destination != nullptr)
+		TState destination;
+		if (handler->results_in_transition_from(source, destination))
 		{
-			TTransition transition(source, *destination, trigger);
+			TTransition transition(source, destination, trigger);
 			current_representation()->exit(transition);
 			set_state(transition.destination());
 			current_representation()->enter(transition, args...);

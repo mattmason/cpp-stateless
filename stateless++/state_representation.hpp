@@ -79,7 +79,7 @@ public:
 	void add_entry_action(const TTrigger& trigger, TCallable action)
 	{
 		auto wrapper =
-			[=](const TTransition& transition, TArgs... args)
+			[=](const TTransition& transition, TArgs&&... args)
 			{
 				if (transition.trigger() == trigger)
 				{

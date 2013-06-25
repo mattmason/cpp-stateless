@@ -4,13 +4,16 @@ cmake_minimum_required(VERSION 2.8)
 project(stateless++)
 
 if(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-  add_definitions(--std=c++11)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++/i686-pc-cygwin)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++/backward)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include-fixed)
-endif(!MSVC)
+endif(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+
+if (NOT MSVC)
+  add_definitions(--std=c++11)
+endif (NOT MSVC)
 
 # Note that setting the toolset doesn't have any effect at the moment
 # but it probably will do in future.

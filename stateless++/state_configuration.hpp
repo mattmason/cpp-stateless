@@ -157,9 +157,9 @@ public:
 	state_configuration& ignore_if(const TTrigger& trigger, const TGuard& guard)
 	{
 		auto decision =
-			[=](const TState& source)
+			[=](const TState& source, TState& destination)
 			{
-				return nullptr;
+				return false;
 			};
 		TTriggerBehaviour behaviour(trigger, guard, decision);
 		representation_->add_trigger_behaviour(behaviour);
@@ -173,10 +173,10 @@ public:
 	 *
      * \return This configuration object.
 	 */
-	template<typename TCallable, typename... TArgs>
+	template<typename... TArgs, typename TCallable>
 	state_configuration& on_entry(TCallable entry_action)
 	{
-		representation_->add_entry_action(entry_action);
+		representation_->template add_entry_action<TCallable, TArgs...>(entry_action);
 		return *this;
 	}
 
@@ -188,15 +188,15 @@ public:
 	 *
      * \return This configuration object.
 	 */
-	template<typename TCallable, typename... TArgs>
+	template<typename... TArgs, typename TCallable>
 	state_configuration& on_entry_from(
 		const TTrigger& trigger, TCallable entry_action)
 	{
-		representation_->add_entry_action(trigger, entry_action);
+		representation_->template add_entry_action<TCallable, TArgs...>(trigger, entry_action);
 		return *this;
 	}
 
-	template<typename TCallable, typename... TArgs>
+	template<typename... TArgs, typename TCallable>
 	state_configuration& on_entry_from(
 		const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
 		TCallable entry_action)
@@ -267,9 +267,11 @@ private:
 		const TGuard& guard)
 	{
 		auto decision =
-			[=](const TState& source)
+			[=](const TState& source, TState& destination)
+			-> bool
 			{
-				return &destination_state;
+				destination = destination_state;
+				return true;
 			};
 		TTriggerBehaviour behaviour(trigger, guard, decision);
 		representation_->add_trigger_behaviour(behaviour);

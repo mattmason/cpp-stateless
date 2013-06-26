@@ -47,15 +47,19 @@ using namespace stateless;
 namespace
 {
 
-// No std::put_time on gcc4.7.
+#if _WIN32
+using std::put_time;
+#else
+// No std::put_time on gcc4.7 / cygwin.
 std::string put_time(std::tm* t, const char* fmt)
 {
   std::time_t now = std::time(nullptr);
   std::tm* info = std::gmtime(&now);
-  char buffer[80];
-  std::strftime(buffer, 80, "%F %R %Z", info);
+  char buffer[80] = { 0 };
+  std::strftime(buffer, 80, fmt, info);
   return buffer;
 }
+#endif
 
 void start_call_timer()
 {

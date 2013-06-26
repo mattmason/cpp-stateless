@@ -49,17 +49,28 @@ Supported Platforms
 
 The library and example code has been built on gcc 4.7.2 and Clang version 3.1 on Cygwin.
 
-Visual Studio 2012 requires the Microsoft Visual C++ Compiler Nov 2012 CTP
-Toolset from http://www.microsoft.com/en-gb/download/details.aspx?id=35515.
-The cmake build script attempts to configure this toolset but the cmake variable is currently
-read-only (as of version 2.8.11.1) so you have to manually update the toolset in each project file
+Visual Studio 2012 requires the [Microsoft Visual C++ Compiler Nov 2012 CTP
+Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).
+The cmake build script attempts to configure this toolset but the [cmake CMAKE_VS_PLATFORM_TOOLSET variable is currently
+read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
 to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
 The bug tracker example does not compile under Visual Studio 2012.
 
+Build and Install
+-----------------
+The library itself consists purely of header files. The examples and tests are built but this can be skipped if desired.
+The instructions are the same for all target platforms.
+ 1. git clone https://github.com/mattmason/cpp-stateless
+ 1. cd cpp-stateless
+ 1. mkdir build && cd build
+ 1. cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/include/ ../cpp-stateless
+ 1. To build examples, tests, and install the headers: make install
+ 1. To install the headers without building examples and tests: cd stateless++ && make install
+
 Tasks
 ----
-- [x] Basic functionality.
-- [x] Parameterized triggers.
-- [ ] Dynamic destination state selection.
-- [ ] Unit tests.
-- [ ] Investigate VS2012 build failure.
+ - [x] Basic functionality.
+ - [x] Parameterized triggers.
+ - [ ] Dynamic destination state selection.
+ - [ ] Unit tests.
+ - [ ] Investigate VS2012 build failure.

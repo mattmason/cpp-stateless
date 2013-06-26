@@ -40,7 +40,7 @@ It does not currently compile on Visual Studio (tested with November 2012 CTP).
 
 Tasks
 ----
-- [X] Basic functionality.
-- [X] Parameterized triggers.
+- [x] Basic functionality.
+- [x] Parameterized triggers.
 - [ ] Dynamic destination state selection.
 - [ ] Unit tests.

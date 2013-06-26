@@ -3,17 +3,6 @@ cpp-stateless
 
 Port of the [C# Stateless library](https://code.google.com/p/stateless/) to C++11.
 
-License
--------
-The library is licensed under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
-
-Acknowledgements
-----------------
-Thanks to [Nicholas Blumhardt](http://nblumhardt.com/) for writing the original library in C#
-and making it available under a permissive license.
-
-Overview
---------
 The goal of the project is to provide an API that is as close as possible to that of the original
 C# library using only standard C++11 features. No external dependencies are required.
 
@@ -42,6 +31,15 @@ onOffSwitch.fire(space); // <-- state is now "On"
 
 See the [bug tracker example](examples/bug_tracker/bug.cpp) for a more comprehensive use of the configuration API including
 parameterized triggers and entry and exit actions.
+
+License
+-------
+The library is licensed under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
+
+Acknowledgements
+----------------
+Thanks to [Nicholas Blumhardt](http://nblumhardt.com/) for writing the original library in C#
+and making it available under a permissive license.
 
 Supported Platforms
 -------------------

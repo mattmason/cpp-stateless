@@ -57,12 +57,20 @@ Build and Install
 -----------------
 The library itself consists purely of header files. The examples and tests are built but this can be skipped if desired.
 The instructions are the same for all target platforms.
- 1. git clone https://github.com/mattmason/cpp-stateless
- 1. cd cpp-stateless
- 1. mkdir build && cd build
- 1. cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/include/ ../cpp-stateless
- 1. To build examples, tests, and install the headers: make install
- 1. To install the headers without building examples and tests: cd stateless++ && make install
+```
+git clone https://github.com/mattmason/cpp-stateless
+cd cpp-stateless
+mkdir build && cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/include/ ../cpp-stateless
+```
+To build examples, tests, and install the headers:
+```
+make install
+```
+To install the headers without building examples and tests:
+```
+cd stateless++ && make install
+```
 
 Tasks
 ----

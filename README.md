@@ -9,7 +9,7 @@ The library is licensed under the terms of the Apache License 2.0 http://www.apa
 
 Acknowledgements
 ----------------
-Thanks to Nicholas Blumhardt http://nblumhardt.com/ for writing the original library in C#
+Thanks to Nicholas Blumhardt (http://nblumhardt.com/) for writing the original library in C#
 and making it available under a permissive license.
 
 Overview
@@ -35,8 +35,16 @@ A simple example:
 
 Supported Platforms
 -------------------
+CMake (http://www.cmake.org/) build files are supplied to provide portability with minimal effort.
+
 The library and example code has been built on gcc 4.7.2 and Clang version 3.1 on Cygwin.
-It does not currently compile on Visual Studio (tested with November 2012 CTP).
+
+Visual Studio 2012 requires the Microsoft Visual C++ Compiler Nov 2012 CTP
+Toolset from http://www.microsoft.com/en-gb/download/details.aspx?id=35515.
+The cmake build script attempts to configure this toolset but the cmake variable is currently
+read-only (as of version 2.8.11.1) so you have to manually update the toolset in each project file
+to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
+The bug tracker example does not compile under Visual Studio 2012.
 
 Tasks
 ----
@@ -44,3 +52,4 @@ Tasks
 - [x] Parameterized triggers.
 - [ ] Dynamic destination state selection.
 - [ ] Unit tests.
+- [ ] Investigate VS2012 build failure.

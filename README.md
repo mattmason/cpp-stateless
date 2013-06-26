@@ -19,18 +19,25 @@ C# library using only standard C++11 features. No external dependencies are requ
 
 A simple example:
 ```cpp
-  std::string on("On"), off("Off");
-  const char space(' ');
+#include <stateless++/state_machine.hpp>
+...
+std::string on("On"), off("Off");
+const char space(' ');
 
-  state_machine<std::string, char> onOffSwitch(off);
+// Create a state machine with state type string and trigger type char.
+// The state and trigger types can be any type that is
+// - default constructible
+// - assignable and copyable
+// - equality comparable
+state_machine<std::string, char> onOffSwitch(off);
 
-  onOffSwitch.configure(off).permit(space, on);
-  onOffSwitch.configure(on).permit(space, off);
+// Set up using fluent configuration interface.
+onOffSwitch.configure(off).permit(space, on);
+onOffSwitch.configure(on).permit(space, off);
 
-  char c;
-  std::cin.get(c);
-  std::cin.ignore();
-  onOffSwitch.fire(c); // <-- state is now "On"
+// Drive the machine by firing triggers.
+onOffSwitch.fire(space); // <-- state is now "On"
+...
 ```
 
 Supported Platforms

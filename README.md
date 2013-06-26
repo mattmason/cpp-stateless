@@ -5,7 +5,7 @@ Port of the [C# Stateless library](https://code.google.com/p/stateless/) to C++1
 
 License
 -------
-The library is licensed under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html)
+The library is licensed under the terms of the [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 Acknowledgements
 ----------------
@@ -40,7 +40,7 @@ onOffSwitch.fire(space); // <-- state is now "On"
 ...
 ```
 
-See the [bug tracker example ](examples/bug_tracker.bug.cpp) for a more comprehensive use of the configuration API including
+See the [bug tracker example](examples/bug_tracker/bug.cpp) for a more comprehensive use of the configuration API including
 parameterized triggers and entry and exit actions.
 
 Supported Platforms

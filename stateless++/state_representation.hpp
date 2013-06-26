@@ -17,6 +17,7 @@
 #ifndef STATELESS_STATE_REPRESENTATION_HPP
 #define STATELESS_STATE_REPRESENTATION_HPP
 
+#include <type_traits>
 #include <vector>
 
 #include "error.hpp"
@@ -96,7 +97,13 @@ public:
       {
         if (transition.trigger() == trigger)
         {
+#if _WIN32
+          // Workaround for error C3849 http://msdn.microsoft.com/en-us/library/031k84se.aspx
+          typedef typename std::remove_cv<TCallable>::type TCVRemoved;
+          ((TCVRemoved)(action))(transition, args...);
+#else
           action(transition, args...);
+#endif
         }
       };
     auto ea = std::make_shared<entry_action<TTransition, TArgs...>>(wrapper);

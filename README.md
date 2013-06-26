@@ -53,8 +53,6 @@ The cmake build script attempts to configure this toolset but the [cmake CMAKE_V
 read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
 to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
 
-The bug tracker example does not compile under Visual Studio 2012.
-
 Build and Install
 -----------------
 The library itself consists purely of header files. The examples and tests are built but this can be skipped if desired.
@@ -72,4 +70,4 @@ Tasks
  - [x] Parameterized triggers.
  - [ ] Dynamic destination state selection.
  - [ ] Unit tests.
- - [ ] Investigate VS2012 build failure.
+ - [x] Investigate VS2012 build failure.

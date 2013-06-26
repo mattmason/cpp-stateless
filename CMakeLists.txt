@@ -30,10 +30,9 @@ if (NOT MSVC)
   add_definitions(--std=c++11)
 endif (NOT MSVC)
 
-# Note that setting the toolset doesn't have any effect at the moment
-# but it probably will do in future.
 if(MSVC)
-  message("${CMAKE_VS_PLATFORM_TOOLSET}")
+  # Note that setting the toolset doesn't have any effect at the moment
+  # but it probably will do in future.
   set(CMAKE_VS_PLATFORM_TOOLSET "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)")
 endif(MSVC)
 

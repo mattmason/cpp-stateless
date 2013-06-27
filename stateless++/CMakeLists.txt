@@ -15,4 +15,4 @@
 # Install stateless++ header files.
 
 file(GLOB files *.hpp)
-install(FILES ${files} DESTINATION "stateless++")
+install(FILES ${files} DESTINATION "include/stateless++")

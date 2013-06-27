@@ -60,7 +60,7 @@ The instructions are the same for all target platforms.
  1. git clone https://github.com/mattmason/cpp-stateless
  1. cd cpp-stateless
  1. mkdir build && cd build
- 1. cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/include/ ../cpp-stateless
+ 1. cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/ ../cpp-stateless
  1. To build examples, tests, and install the headers: make install
  1. To install the headers without building examples and tests: cd stateless++ && make install
 

@@ -55,7 +55,8 @@ to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
 
 Build and Install
 -----------------
-The library itself consists purely of header files. The examples and tests are built but this can be skipped if desired.
+The library itself is header file only. The examples and tests are built by default but this can be skipped if
+you just want to install the library header files.
 The instructions are the same for all target platforms.
 ```
 git clone https://github.com/mattmason/cpp-stateless

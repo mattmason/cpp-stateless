@@ -51,7 +51,7 @@ Visual Studio 2012 requires the [Microsoft Visual C++ Compiler Nov 2012 CTP
 Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).
 The cmake build script attempts to configure this toolset but the [cmake CMAKE_VS_PLATFORM_TOOLSET variable is currently
 read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
-to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
+to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)". [This PowerShell script](Set-Toolset.ps1) automates the process.
 
 Build and Install
 -----------------

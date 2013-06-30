@@ -14,6 +14,6 @@
 
 # Build on off switch example.
 
-include_directories(${stateless++_SOURCE_DIR}/stateless++)
+include_directories(${stateless++_SOURCE_DIR})
 
 add_executable(on_off main.cpp)

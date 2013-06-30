@@ -14,6 +14,6 @@
 
 # Build bug tracker example.
 
-include_directories(${stateless++_SOURCE_DIR}/stateless++)
+include_directories(${stateless++_SOURCE_DIR})
 
 add_executable(telephone_call main.cpp)

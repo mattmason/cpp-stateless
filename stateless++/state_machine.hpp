@@ -155,7 +155,7 @@ public:
      *
      * \param action The action to execute, accepting the details of the transition.
    */
-  void on_transition(const TTransition& action)
+  void on_transition(const TTransitionAction& action)
   {
     on_transition_ = action;
   }

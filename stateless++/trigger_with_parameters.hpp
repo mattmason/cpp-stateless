@@ -47,6 +47,10 @@ template<typename TTrigger, typename... TArgs>
 class trigger_with_parameters : public abstract_trigger_with_parameters<TTrigger>
 {
 public:
+  /**
+   * Construct a parameterized trigger.
+   * Not for client use; use state_machine::set_trigger_parameters.
+   */
   trigger_with_parameters(const TTrigger& underlying_trigger)
     : abstract_trigger_with_parameters<TTrigger>(underlying_trigger)
   {}

@@ -55,28 +55,33 @@ to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)".
 
 Build and Install
 -----------------
-The library itself is header file only. The examples and tests are built by default but this can be skipped if
-you just want to install the library header files.
-The instructions are the same for all target platforms.
+The library itself is header file only.
+The examples are built by default but this can be skipped if you just want to install the library header files.
+The unit tests depend on [GoogleTest](https://code.google.com/p/googletest/) version 1.6.0, but only are only built
+if the gtest library is found on the target system.
+
+The instructions for UNIX-like platforms are:
 ```
 git clone https://github.com/mattmason/cpp-stateless
 cd cpp-stateless
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/ ../cpp-stateless
 ```
-To build examples, tests, and install the headers:
+To build examples, build and run unit tests, and install the headers:
 ```
-make install
+make && make test && make install
 ```
 To install the headers without building examples and tests:
 ```
 cd stateless++ && make install
 ```
+For Visual Studio 2012 use the generated project files.
 
 Tasks
 ----
  - [x] Basic functionality.
  - [x] Parameterized triggers.
  - [ ] Dynamic destination state selection.
- - [ ] Unit tests.
+ - [x] Unit tests.
  - [x] Investigate VS2012 build failure.
+ - [x] Investigate VS2012 unit test failure.

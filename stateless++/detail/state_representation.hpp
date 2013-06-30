@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-#ifndef STATELESS_STATE_REPRESENTATION_HPP
-#define STATELESS_STATE_REPRESENTATION_HPP
+#ifndef STATELESS_DETAIL_STATE_REPRESENTATION_HPP
+#define STATELESS_DETAIL_STATE_REPRESENTATION_HPP
 
+#include <map>
+#include <memory>
 #include <type_traits>
 #include <vector>
 
-#include "error.hpp"
+#include "../error.hpp"
 #include "transition.hpp"
 #include "trigger_behaviour.hpp"
 
@@ -140,11 +142,11 @@ public:
     }
     else if (!includes(transition.destination()))
     {
+      execute_exit_actions(transition);
       if (super_state_ != nullptr)
       {
         super_state_->exit(transition);
       }
-      execute_exit_actions(transition);
     }
   }
 
@@ -192,7 +194,7 @@ public:
 
   bool is_included_in(const TState& state) const
   {
-    return (state == state() ||
+    return (state == state_ ||
       (super_state_ != nullptr && super_state_->is_included_in(state)));
   }
 
@@ -264,4 +266,4 @@ private:
 
 }
 
-#endif // STATELESS_STATE_REPRESENTATION_HPP
+#endif // STATELESS_DETAIL_STATE_REPRESENTATION_HPP

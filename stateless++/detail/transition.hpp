@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef STATELESS_TRIGGER_BEHAVIOUR_HPP
-#define STATELESS_TRIGGER_BEHAVIOUR_HPP
-
-#include <functional>
+#ifndef STATELESS_DETAIL_TRANSITION_HPP
+#define STATELESS_DETAIL_TRANSITION_HPP
 
 namespace stateless
 {
@@ -26,41 +24,32 @@ namespace detail
 {
 
 template<typename TState, typename TTrigger>
-class trigger_behaviour
+class transition
 {
 public:
-  typedef std::function<bool()> TGuard;
-  typedef std::function<bool(const TState&, TState&)> TDecision;
-
-  trigger_behaviour(const TTrigger& trigger, const TGuard& guard, const TDecision& decision)
-    : trigger_(trigger)
-    , guard_(guard)
-    , decision_(decision)
+  transition(
+    const TState& source,
+    const TState& destination,
+    const TTrigger& trigger)
+    : source_(source), destination_(destination), trigger_(trigger)
   {}
 
-  const TTrigger& trigger() const
-  {
-    return trigger_;
-  }
+  const TState& source() const { return source_; }
 
-  bool is_condition_met() const
-  {
-    return guard_();
-  }
+  const TState& destination() const { return destination_; }
 
-  const bool results_in_transition_from(const TState& source, TState& destination) const
-  {
-    return decision_(source, destination);
-  }
+  const TTrigger& trigger() const { return trigger_; }
 
+  bool is_reentry() const { return source_ == destination_; }
+      
 private:
+  const TState source_;
+  const TState destination_;
   const TTrigger trigger_;
-  TGuard guard_;
-  TDecision decision_;
 };
 
 }
 
 }
 
-#endif // STATELESS_TRIGGER_BEHAVIOUR_HPP
+#endif // STATELESS_DETAIL_TRANSITION_HPP

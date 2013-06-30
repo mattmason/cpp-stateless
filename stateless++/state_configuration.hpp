@@ -17,25 +17,15 @@
 #ifndef STATELESS_STATE_CONFIGURATION_HPP
 #define STATELESS_STATE_CONFIGURATION_HPP
 
-#include "state_representation.hpp"
-#include "transition.hpp"
+#include "detail/no_guard.hpp"
+#include "detail/state_representation.hpp"
+#include "detail/transition.hpp"
 #include "trigger_with_parameters.hpp"
 
 #include <functional>
 
 namespace stateless
 {
-
-namespace detail
-{
-
-/// Convenience function for no-op guard clause.
-inline bool no_guard()
-{
-  return true;
-}
-
-}
 
 template<typename TState, typename TTrigger>
 class state_machine;
@@ -250,7 +240,7 @@ public:
 
 private:
   friend state_machine<TState, TTrigger>;
-  
+
   /**
    * Construct a configuration object for a single state.
    * Not for client use; configuration objects are created by the state_machine.

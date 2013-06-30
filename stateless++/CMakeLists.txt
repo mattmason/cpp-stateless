@@ -14,5 +14,6 @@
 
 # Install stateless++ header files.
 
-file(GLOB files *.hpp)
-install(FILES ${files} DESTINATION "include/stateless++")
+install(DIRECTORY .
+        DESTINATION "include/stateless++"
+        FILES_MATCHING PATTERN "*.hpp")

@@ -17,8 +17,10 @@
 #ifndef STATELESS_DETAIL_STATE_REPRESENTATION_HPP
 #define STATELESS_DETAIL_STATE_REPRESENTATION_HPP
 
+#include <algorithm>
 #include <map>
 #include <memory>
+#include <set>
 #include <type_traits>
 #include <vector>
 
@@ -196,6 +198,34 @@ public:
   {
     return (state == state_ ||
       (super_state_ != nullptr && super_state_->is_included_in(state)));
+  }
+  
+  std::set<TTrigger> permitted_triggers() const
+  {
+    std::set<TTrigger> local;
+    for (auto& trigger_behaviour_list : trigger_behaviours_)
+    {
+      for (auto& trigger_behaviour : trigger_behaviour_list.second)
+      {
+        if (trigger_behaviour.is_condition_met())
+        {
+          local.insert(trigger_behaviour_list.first);
+          break;
+        }
+      }
+    }
+      
+    if (super_state_ != nullptr)
+    {
+      auto super = super_state_->permitted_triggers();
+      std::set<TTrigger> result;
+      std::set_union(
+        local.begin(), local.end(),
+        super.begin(), super.end(),
+        std::inserter(result, result.begin()));
+      return result;
+    }    
+    return local;
   }
 
 private:

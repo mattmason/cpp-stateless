@@ -86,19 +86,38 @@ TEST(StateMachine, WhenInSubstate_ThenTriggerIgnoredInSuperstateRemainsInSubstat
   ASSERT_EQ(state::B, sm.state());
 }
 
-TEST(StateMachine, DISABLED_WhenPermittedTriggersIncludeSuperstate_ThenPermittedTriggersAreIncluded)
+TEST(StateMachine, WhenPermittedTriggersIncludeSuperstate_ThenPermittedTriggersAreIncluded)
 {
-  // TODO Not implemented yet.
+  TStateMachine sm(state::B);
+  sm.configure(state::A).permit(trigger::Z, state::B);
+  sm.configure(state::B).sub_state_of(state::C).permit(trigger::X, state::A);
+  sm.configure(state::C).permit(trigger::Y, state::A);
+  
+  auto permitted = sm.permitted_triggers();
+  
+  EXPECT_NE(permitted.end(), permitted.find(trigger::X));
+  EXPECT_NE(permitted.end(), permitted.find(trigger::Y));
+  EXPECT_EQ(permitted.end(), permitted.find(trigger::Z));
 }
 
-TEST(StateMachine, DISABLED_WhenPermittedTriggers_ThenTheyAreDistinctValues)
+TEST(StateMachine, WhenPermittedTriggers_ThenTheyAreDistinctValues)
 {
-  // TODO Not implemented yet.
+  TStateMachine sm(state::B);
+  sm.configure(state::B).sub_state_of(state::C).permit(trigger::X, state::A);
+  sm.configure(state::C).permit(trigger::X, state::B);
+  
+  auto permitted = sm.permitted_triggers();
+  
+  EXPECT_EQ(1, permitted.size());
+  EXPECT_EQ(trigger::X, *permitted.begin());
 }
 
-TEST(StateMachine, DISABLED_WhenPermittedTriggerIncludesGuard_ThenGuardIsRespected)
+TEST(StateMachine, WhenPermittedTriggerIncludesGuard_ThenGuardIsRespected)
 {
-  // TODO Not implemented yet.
+  TStateMachine sm(state::B);
+  sm.configure(state::B).permit_if(trigger::X, state::A, [](){ return false; });
+  
+  EXPECT_EQ(0, sm.permitted_triggers().size());
 }
 
 TEST(StateMachine, WhenDiscriminatedByGuard_ThenChoosesPermittedTransition)
@@ -108,6 +127,7 @@ TEST(StateMachine, WhenDiscriminatedByGuard_ThenChoosesPermittedTransition)
     .permit_if(trigger::X, state::A, [](){ return false; })
     .permit_if(trigger::X, state::C, [](){ return true; });
   sm.fire(trigger::X);
+  
   ASSERT_EQ(state::C, sm.state());
 }
 

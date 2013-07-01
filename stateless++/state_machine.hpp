@@ -20,6 +20,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <set>
 
 #include "state_configuration.hpp"
 #include "trigger_with_parameters.hpp"
@@ -58,21 +59,21 @@ public:
   /// Signature for handler for state transition. Does nothing by default.
   typedef std::function<void(const TTransition&)> TTransitionAction;
 
-    /**
+  /**
    * Construct a state machine with external state storage.
-     *
-     * \param state_accessor A function that will be called to read the current state value.
-     * \param state_mutator  An action that will be called to write new state values.
+   *
+   * \param state_accessor A function that will be called to read the current state value.
+   * \param state_mutator  An action that will be called to write new state values.
    */
   state_machine(const TStateAccessor& state_accessor, const TStateMutator& state_mutator)
   {
     init(state_accessor, state_mutator);
   }
 
-    /**
-     * Construct a state machine.
-     *
-     * \param initial_state The initial state.
+  /**
+   * Construct a state machine.
+   *
+   * \param initial_state The initial state.
    */
   state_machine(const TState& initial_state)
   {
@@ -103,19 +104,19 @@ public:
       std::bind(&state_reference::set, state, _1));
   }
 
-    /// The current state.
+  /// The current state.
   const TState& state() const
   {
     return state_accessor_();
   }
 
-    /**
-     * Begin configuration of the entry/exit actions and allowed transitions
-     * when the state machine is in a particular state.
+  /**
+   * Begin configuration of the entry/exit actions and allowed transitions
+   * when the state machine is in a particular state.
    *
-     * \param state The state to configure.
+   * \param state The state to configure.
    *
-     * \return A configuration object through which the state can be configured.
+   * \return A configuration object through which the state can be configured.
    */
   TStateConfiguration configure(const TState& state)
   {
@@ -126,21 +127,32 @@ public:
       std::bind(&TSelf::get_representation, this, _1));
   }
 
-    /**
-     * Transition from the current state via the supplied trigger.
-     * The target state is determined by the configuration of the current state.
-     * Actions associated with leaving the current state and entering the new one
-     * will be invoked.
-     *
-     * \param trigger The trigger to fire.
+  /**
+   * Transition from the current state via the supplied trigger.
+   * The target state is determined by the configuration of the current state.
+   * Actions associated with leaving the current state and entering the new one
+   * will be invoked.
    *
-     * \throw error The current state does not allow the trigger to be fired.
+   * \param trigger The trigger to fire.
+   *
+   * \throw error The current state does not allow the trigger to be fired.
    */
   void fire(const TTrigger& trigger)
   {
     internal_fire(trigger);
   }
 
+  /**
+   * Transition from the current state via the supplied trigger.
+   * The target state is determined by the configuration of the current state.
+   * Actions associated with leaving the current state and entering the new one
+   * will be invoked.
+   *
+   * \param trigger The trigger to fire.
+   * \param args The arguments to pass in the transition.
+   *
+   * \throw error The current state does not allow the trigger to be fired.
+   */
   template<typename... TArgs>
   void fire(
     const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
@@ -149,52 +161,60 @@ public:
     internal_fire(trigger->trigger(), args...);
   }
 
-    /**
-     * Register a callback that will be invoked every time the state machine
-     * transitions from one state into another.
-     *
-     * \param action The action to execute, accepting the details of the transition.
+  /**
+   * Register a callback that will be invoked every time the state machine
+   * transitions from one state into another.
+   *
+   * \param action The action to execute, accepting the details of the transition.
    */
   void on_transition(const TTransitionAction& action)
   {
     on_transition_ = action;
   }
 
-    /**
-     * Override the default behaviour of throwing an exception when an
+  /**
+   * Override the default behaviour of throwing an exception when an
    * unhandled trigger is fired.
-     *
-     * \param action An action to call when an unhandled trigger is fired.
+   *
+   * \param action An action to call when an unhandled trigger is fired.
    */
   void on_unhandled_trigger(const TUnhandledTriggerAction& action)
   {
     on_unhandled_trigger_ = action;
   }
 
-    /**
-     * Determine whether the state machine is in the supplied state.
-     *
-     * \param state The state to test for.
+  /**
+   * Determine whether the state machine is in the supplied state.
    *
-     * \return True if the current state is equal to, or a substate of, the supplied state.
+   * \param state The state to test for.
+   *
+   * \return True if the current state is equal to, or a substate of, the supplied state.
    */
   bool is_in_state(const TState& state)
   {
     return current_representation()->is_included_in(state);
   }
 
-    /**
-     * Determine whether supplied trigger can be fired in the current state.
-     *
-     * \param trigger Trigger to test.
+  /**
+   * Determine whether supplied trigger can be fired in the current state.
    *
-     * \return True if the trigger can be fired, false otherwise.
+   * \param trigger Trigger to test.
+   *
+   * \return True if the trigger can be fired, false otherwise.
    */
   bool can_fire(const TTrigger& trigger) const
   {
     return current_representation()->can_handle(trigger);
   }
 
+  /**
+   * Specify the arguments that must be supplied when a specific trigger is fired.
+   *
+   * \param trigger The underlying trigger value.
+   *
+   * \return An object that can be passed to the Fire() method in order to 
+   *         fire the parameterised trigger.
+   */
   template<typename... TArgs>
   std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>
   set_trigger_parameters(const TTrigger& trigger)
@@ -210,12 +230,20 @@ public:
     return configuration;
   }
 
+  /**
+   * The currently permissible trigger values.
+   */
+  std::set<TTrigger> permitted_triggers() const
+  {
+    return current_representation()->permitted_triggers();
+  }
+
 private:
-    /**
+  /**
    * Perform initialization.
-     *
-     * \param state_accessor A function that will be called to read the current state value.
-     * \param state_mutator  An action that will be called to write new state values.
+   *
+   * \param state_accessor A function that will be called to read the current state value.
+   * \param state_mutator  An action that will be called to write new state values.
    */
   void init(
     const TStateAccessor& state_accessor,

@@ -84,4 +84,4 @@ Tasks
  - [ ] Dynamic destination state selection.
  - [x] Unit tests.
  - [x] Investigate VS2012 build failure.
- - [x] Investigate VS2012 unit test failure.
+ - [ ] Investigate VS2012 unit test failure.

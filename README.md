@@ -46,15 +46,23 @@ Supported Platforms
 -------------------
 [CMake](http://www.cmake.org/) build files are supplied to provide portability with minimal effort.
 
-The library, example code and tests have been built and run on
+The library, example code and tests have been built and run on the following platforms:
+
  - gcc 4.7.2 on Cygwin
+
+   Works out of the box.
+
  - Clang version 3.1 on Cygwin
-    use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11
- - Visual Studio 2012
-    requires the [Microsoft Visual C++ Compiler Nov 2012 CTP Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).
+    
+    Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
+
+ - Visual Studio 2012 on Windows 7
+    
+    Requires the [Microsoft Visual C++ Compiler Nov 2012 CTP Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).
     The cmake build script attempts to configure this toolset but the [cmake CMAKE_VS_PLATFORM_TOOLSET variable is currently
     read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
     to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)". [This PowerShell script](Set-Toolset.ps1) automates the process.
+    One of the unit tests currently fails on this platform.
 
 Build and Install
 -----------------

@@ -2,6 +2,7 @@ cpp-stateless
 =============
 
 Port of the [C# Stateless library](https://code.google.com/p/stateless/) to C++11.
+It's a lightweight state machine implementation with a fluent configuration interface.
 
 The goal of the project is to provide an API that is as close as possible to that of the original
 C# library using only standard C++11 features. No external dependencies are required.
@@ -18,14 +19,14 @@ const char space(' ');
 // - default constructible
 // - assignable and copyable
 // - equality comparable
-state_machine<std::string, char> onOffSwitch(off);
+state_machine<std::string, char> on_off_switch(off);
 
 // Set up using fluent configuration interface.
-onOffSwitch.configure(off).permit(space, on);
-onOffSwitch.configure(on).permit(space, off);
+on_off_switch.configure(off).permit(space, on);
+on_off_switch.configure(on).permit(space, off);
 
 // Drive the machine by firing triggers.
-onOffSwitch.fire(space); // <-- state is now "On"
+on_off_switch.fire(space); // <-- state is now "On"
 ...
 ```
 

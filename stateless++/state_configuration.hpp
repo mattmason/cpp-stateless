@@ -64,13 +64,13 @@ public:
   ///Signature for lookup function.
   typedef std::function<TStateRepresentation*(const TState&)> TLookup;
 
-    /**
-     * Accept the specified trigger and transition to the destination state.
-     *
-     * \param trigger The accepted trigger.
-     * \param destination_state The state that the trigger will cause a transition to.
+  /**
+   * Accept the specified trigger and transition to the destination state.
    *
-     * \return This configuration object.
+   * \param trigger The accepted trigger.
+   * \param destination_state The state that the trigger will cause a transition to.
+   *
+   * \return This configuration object.
    */
   state_configuration& permit(
     const TTrigger& trigger, const TState& destination_state)
@@ -79,14 +79,14 @@ public:
     return internal_permit(trigger, destination_state);
   }
 
-    /**
-     * Accept the specified trigger and transition to the destination state.
-     *
-     * \param trigger The accepted trigger.
-     * \param destination_state The state that the trigger will cause a transition to.
-     * \param guard Function that must return true in order for the trigger to be accepted.
+  /**
+   * Accept the specified trigger and transition to the destination state.
    *
-     * \return This configuration object.
+   * \param trigger The accepted trigger.
+   * \param destination_state The state that the trigger will cause a transition to.
+   * \param guard Function that must return true in order for the trigger to be accepted.
+   *
+   * \return This configuration object.
    */
   state_configuration& permit_if(
     const TTrigger& trigger,
@@ -97,34 +97,34 @@ public:
     return internal_permit_if(trigger, destination_state, guard);
   }
 
-    /**
-     * Accept the specified trigger, execute exit actions and re-execute entry actions.
-     * Reentry behaves as though the configured state transitions to an identical sibling state.
-     *
-     * \param trigger The accepted trigger.
+  /**
+   * Accept the specified trigger, execute exit actions and re-execute entry actions.
+   * Reentry behaves as though the configured state transitions to an identical sibling state.
    *
-     * \return This configuration object.
+   * \param trigger The accepted trigger.
    *
-     * \note Applies to the current state only. Will not re-execute superstate actions,
+   * \return This configuration object.
+   *
+   * \note Applies to the current state only. Will not re-execute superstate actions,
    * or cause actions to execute transitioning between super- and sub-states.
-     */
+   */
   state_configuration& permit_reentry(const TTrigger& trigger)
   {
     return internal_permit(trigger, representation_->underlying_state());
   }
 
-    /**
-     * Accept the specified trigger, execute exit actions and re-execute entry actions.
-     * Reentry behaves as though the configured state transitions to an identical sibling state.
-     *
-     * \param trigger The accepted trigger.
-     * \param guard Function that must return true in order for the trigger to be accepted.
+  /**
+   * Accept the specified trigger, execute exit actions and re-execute entry actions.
+   * Reentry behaves as though the configured state transitions to an identical sibling state.
    *
-     * \return This configuration object.
+   * \param trigger The accepted trigger.
+   * \param guard Function that must return true in order for the trigger to be accepted.
    *
-     * \note Applies to the current state only. Will not re-execute superstate actions,
+   * \return This configuration object.
+   *
+   * \note Applies to the current state only. Will not re-execute superstate actions,
    * or cause actions to execute transitioning between super- and sub-states.
-     */
+   */
   state_configuration& permit_reentry_if(
     const TTrigger& trigger, const TGuard& guard)
   {
@@ -132,25 +132,25 @@ public:
       trigger, representation_->underlying_state(), guard);
   }
 
-    /**
-     * Ignore the specified trigger when in the configured state.
-     *
-     * \param trigger The trigger to ignore.
+  /**
+   * Ignore the specified trigger when in the configured state.
    *
-     * \return This configuration object.
+   * \param trigger The trigger to ignore.
+   *
+   * \return This configuration object.
    */
   state_configuration& ignore(const TTrigger& trigger)
   {
     return ignore_if(trigger, detail::no_guard);
   }
 
-    /**
-     * Ignore the specified trigger when in the configured state.
-     *
-     * \param trigger The trigger to ignore.
-     * \param guard Function that must return true in order for the trigger to be accepted.
+  /**
+   * Ignore the specified trigger when in the configured state.
    *
-     * \return This configuration object.
+   * \param trigger The trigger to ignore.
+   * \param guard Function that must return true in order for the trigger to be accepted.
+   *
+   * \return This configuration object.
    */
   state_configuration& ignore_if(const TTrigger& trigger, const TGuard& guard)
   {
@@ -164,12 +164,12 @@ public:
     return *this;
   }
 
-    /**
-     * Specify an action that will execute when transitioning into the configured state.
-     *
-     * \param entry_action Action to execute, providing details of the transition.
+  /**
+   * Specify an action that will execute when transitioning into the configured state.
    *
-     * \return This configuration object.
+   * \param entry_action Action to execute, providing details of the transition.
+   *
+   * \return This configuration object.
    */
   template<typename... TArgs, typename TCallable>
   state_configuration& on_entry(TCallable entry_action)
@@ -178,13 +178,13 @@ public:
     return *this;
   }
 
-    /**
-     * Specify an action that will execute when transitioning into the configured state.
-     *
-     * \param trigger The trigger by which the state must be entered in order for the action to execute.
-     * \param entry_action Action to execute, providing details of the transition.
+  /**
+   * Specify an action that will execute when transitioning into the configured state.
    *
-     * \return This configuration object.
+   * \param trigger The trigger by which the state must be entered in order for the action to execute.
+   * \param entry_action Action to execute, providing details of the transition.
+   *
+   * \return This configuration object.
    */
   template<typename... TArgs, typename TCallable>
   state_configuration& on_entry_from(
@@ -203,12 +203,12 @@ public:
     return *this;
   }
 
-    /**
-     * Specify an action that will execute when transitioning from the configured state.
-     *
-     * \param exit_action Action to execute, providing details of the transition.
+  /**
+   * Specify an action that will execute when transitioning from the configured state.
    *
-     * \return This configuration object.
+   * \param exit_action Action to execute, providing details of the transition.
+   *
+   * \return This configuration object.
    */
   template<typename TCallable>
   state_configuration& on_exit(TCallable exit_action)
@@ -217,18 +217,18 @@ public:
     return *this;
   }
 
-    /**
-     * Set the superstate that the configured state is a substate of.
-     *
-     * Substates inherit the allowed transitions of their superstate.
-     * When entering directly into a substate from outside of the superstate,
-     * entry actions for the superstate are executed.
-     * Likewise when leaving from the substate to outside the supserstate,
-     * exit actions for the superstate will execute.
-     *
-     * \param superstate The superstate.
+  /**
+   * Set the superstate that the configured state is a substate of.
    *
-     * \return This configuration object.
+   * Substates inherit the allowed transitions of their superstate.
+   * When entering directly into a substate from outside of the superstate,
+   * entry actions for the superstate are executed.
+   * Likewise when leaving from the substate to outside the supserstate,
+   * exit actions for the superstate will execute.
+   *
+   * \param superstate The superstate.
+   *
+   * \return This configuration object.
    */
   state_configuration& sub_state_of(const TState& super_state)
   {

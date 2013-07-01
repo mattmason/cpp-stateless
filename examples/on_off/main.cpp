@@ -29,20 +29,20 @@ int main(int argc, char* argv[])
     std::string on("On"), off("Off");
     const char space(' ');
 
-    state_machine<std::string, char> onOffSwitch(off);
+    state_machine<std::string, char> on_off_switch(off);
 
-    onOffSwitch.configure(off).permit(space, on);
-    onOffSwitch.configure(on).permit(space, off);
+    on_off_switch.configure(off).permit(space, on);
+    on_off_switch.configure(on).permit(space, off);
 
     std::cout << "Press <space> to toggle the switch. Any other key will raise an error" << std::endl;
 
     while (true)
     {
-      std::cout << "switch is in state " << onOffSwitch.state() << std::endl;
+      std::cout << "switch is in state " << on_off_switch.state() << std::endl;
       char c;
       std::cin.get(c);
       std::cin.ignore();
-      onOffSwitch.fire(c);
+      on_off_switch.fire(c);
     }
   }
   catch (const std::exception& e)

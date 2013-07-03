@@ -48,7 +48,7 @@ public:
   typedef typename TStateConfiguration::TTriggerWithParameters TTriggerWithParameters;
 
   /// Signature for read access of externally managed state.
-  typedef std::function<const TState&()> TStateAccessor;
+  typedef std::function<const TState()> TStateAccessor;
 
   /// Signature for write access to externally managed state.
   typedef std::function<void(const TState&)> TStateMutator;
@@ -105,7 +105,7 @@ public:
   }
 
   /// The current state.
-  const TState& state() const
+  const TState state() const
   {
     return state_accessor_();
   }

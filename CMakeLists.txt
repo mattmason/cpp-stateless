@@ -28,6 +28,9 @@ if(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include-fixed)
 endif(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
+message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
+message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
+
 if (NOT MSVC)
   add_definitions(--std=gnu++11)
 endif (NOT MSVC)
@@ -35,7 +38,7 @@ endif (NOT MSVC)
 if(MSVC)
   # Note that setting the toolset doesn't have any effect at the moment
   # but it probably will do in future.
-  set(CMAKE_VS_PLATFORM_TOOLSET "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)")
+  set(CMAKE_VS_PLATFORM_TOOLSET "v120_CTP_Nov2012")
 endif(MSVC)
 
 add_subdirectory(examples)

@@ -50,11 +50,12 @@ The library, example code and tests have been built and run on the following pla
 
  - gcc 4.7.2 on Cygwin
 
-   Works out of the box.
+   No known issues.
 
  - Clang version 3.1 on Cygwin
     
     Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
+    A number of unit tests fail. Investigation is hampered by inability to debug Clang 3.1 executables due to missing symbol information.
 
  - Visual Studio 2012 on Windows 7
     
@@ -62,7 +63,6 @@ The library, example code and tests have been built and run on the following pla
     The cmake build script attempts to configure this toolset but the [cmake CMAKE_VS_PLATFORM_TOOLSET variable is currently
     read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
     to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)". [This PowerShell script](Set-Toolset.ps1) automates the process.
-    One of the unit tests currently fails on this platform.
 
 Build and Install
 -----------------
@@ -95,4 +95,5 @@ Tasks
  - [ ] Dynamic destination state selection.
  - [x] Unit tests.
  - [x] Investigate VS2012 build failure.
- - [ ] Investigate VS2012 unit test failure.
+ - [x] Investigate VS2012 unit test failure.
+ - [ ] Investigate Clang unit test failures.

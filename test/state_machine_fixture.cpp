@@ -57,7 +57,7 @@ TEST(StateMachine, WhenStateIsStoredExternally_ThenItIsRetrieved)
 {
   state s = state::B;
   TStateMachine sm([&](){ return s; }, [&](const state& new_s){ s = new_s; });
-
+    
   sm.configure(state::B).permit(trigger::X, state::C);
 
   ASSERT_EQ(state::B, sm.state());

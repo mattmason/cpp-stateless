@@ -17,6 +17,15 @@
 #ifndef STATELESS_TEST_STATE_HPP
 #define STATELESS_TEST_STATE_HPP
 
+#include <iostream>
+
 enum class state { A, B, C };
+
+inline std::ostream& operator<<(std::ostream&os, const state& s)
+{
+  static const char* state_name[] = { "A", "B", "C" };
+  os << state_name[(int)s];
+  return os;
+}
 
 #endif // STATELESS_TEST_STATE_HPP

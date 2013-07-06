@@ -86,12 +86,12 @@ public:
 
       const TState& get() const
       {
-        return state_;
+        return this->state_;
       }
 
       void set(const TState& new_state)
       {
-        state_ = new_state;
+        this->state_ = new_state;
       }
 
     private:

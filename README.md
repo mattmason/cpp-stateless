@@ -31,7 +31,7 @@ on_off_switch.fire(space); // <-- state is now "On"
 ```
 
 See the [bug tracker example](examples/bug_tracker/bug.cpp) for a more comprehensive use of the configuration API including
-parameterized triggers and entry and exit actions.
+parameterized triggers, sub-states and entry and exit actions.
 
 License
 -------
@@ -55,7 +55,6 @@ The library, example code and tests have been built and run on the following pla
  - Clang 3.1 on Cygwin, 3.2 on Ubuntu
     
     Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
-    A number of unit tests fail. Investigation is hampered by inability to debug Clang 3.1 executables due to missing symbol information.
 
  - Visual Studio 2012 on Windows 7
     
@@ -79,15 +78,15 @@ cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/ ../cpp-stateless
 ```
 To build examples, build and run unit tests, and install the headers:
 ```
-make && make test && make install
+make && make test && make install # sudo may be required for make install
 ```
 To install the headers without building examples and tests:
 ```
-cd stateless++ && make install
+cd stateless++ && make install # sudo may be required for make install
 ```
 For Visual Studio 2012 use the generated project files to build from within the IDE or on the command line.
 
 Tasks
 ----
  - [ ] Dynamic destination state selection.
- - [ ] Investigate Clang 3.1/cygwin 3.2/Ubuntu unit test failures and on/off example failure.
+ - [x] Investigate Clang 3.1/cygwin 3.2/Ubuntu unit test failures and on/off example failure.

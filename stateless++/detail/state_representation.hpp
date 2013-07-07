@@ -154,8 +154,8 @@ public:
 
   void add_trigger_behaviour(const TTriggerBehaviour& trigger_behaviour)
   {
-    auto& it = trigger_behaviours_[trigger_behaviour.trigger()];
-    it.push_back(trigger_behaviour);
+    trigger_behaviours_[trigger_behaviour.trigger()]
+      .push_back(trigger_behaviour);
   }
 
   const state_representation& super_state() const

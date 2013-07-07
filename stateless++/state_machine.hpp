@@ -77,26 +77,6 @@ public:
    */
   state_machine(const TState& initial_state)
   {
-    class state_reference
-    {
-    public:
-      state_reference(const TState& initial_state)
-        : state_(initial_state)
-      {}
-
-      const TState& get() const
-      {
-        return this->state_;
-      }
-
-      void set(const TState& new_state)
-      {
-        this->state_ = new_state;
-      }
-
-    private:
-      TState state_;
-    };
     auto state = std::make_shared<state_reference>(initial_state);
     using namespace std::placeholders;
     init(
@@ -239,6 +219,30 @@ public:
   }
 
 private:
+  /**
+   * Wrapper class for internal state storage.
+   */
+  class state_reference
+  {
+  public:
+    state_reference(const TState& initial_state)
+      : state_(initial_state)
+    {}
+
+    const TState& get() const
+    {
+      return state_;
+    }
+
+    void set(const TState& new_state)
+    {
+      state_ = new_state;
+    }
+
+  private:
+    TState state_;
+  };
+
   /**
    * Perform initialization.
    *

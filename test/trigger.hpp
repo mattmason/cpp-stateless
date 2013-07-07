@@ -17,6 +17,15 @@
 #ifndef STATELESS_TEST_TRIGGER_HPP
 #define STATELESS_TEST_TRIGGER_HPP
 
+#include <iostream>
+
 enum class trigger { X, Y, Z };
+
+inline std::ostream& operator<<(std::ostream&os, const trigger& t)
+{
+  static const char* trigger_name[] = { "X", "Y", "Z" };
+  os << trigger_name[(int)t];
+  return os;
+}
 
 #endif // STATELESS_TEST_TRIGGER_HPP

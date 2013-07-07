@@ -20,13 +20,13 @@ project(stateless++)
 
 enable_testing()
 
-if(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+if (CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++/i686-pc-cygwin)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include/c++/backward)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include)
   include_directories(BEFORE SYSTEM /usr/lib/gcc/i686-pc-cygwin/4.7.2/include-fixed)
-endif(CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+endif (CYGWIN AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
   include_directories(BEFORE SYSTEM /usr/include/x86_64-linux-gnu/c++/4.7)
@@ -38,11 +38,11 @@ if (NOT MSVC)
   add_definitions(--std=gnu++11)
 endif (NOT MSVC)
 
-if(MSVC)
+if (MSVC)
   # Note that setting the toolset doesn't have any effect at the moment
   # but it probably will do in future.
   set(CMAKE_VS_PLATFORM_TOOLSET "v120_CTP_Nov2012")
-endif(MSVC)
+endif (MSVC)
 
 add_subdirectory(examples)
 add_subdirectory(stateless++)

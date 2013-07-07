@@ -48,11 +48,11 @@ Supported Platforms
 
 The library, example code and tests have been built and run on the following platforms:
 
- - gcc 4.7.2 on Cygwin
+ - gcc 4.7.2 on Cygwin, gcc 4.7.3 on Ubuntu 12.04
 
    No known issues.
 
- - Clang version 3.1 on Cygwin
+ - Clang 3.1 on Cygwin, 3.2 on Ubuntu
     
     Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
     A number of unit tests fail. Investigation is hampered by inability to debug Clang 3.1 executables due to missing symbol information.
@@ -74,8 +74,7 @@ if the gtest library is found on the target system.
 The instructions for UNIX-like platforms are:
 ```
 git clone https://github.com/mattmason/cpp-stateless
-cd cpp-stateless
-mkdir build && cd build
+mkdir build && cd build # Build without polluting the source tree
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr/local/ ../cpp-stateless
 ```
 To build examples, build and run unit tests, and install the headers:
@@ -86,14 +85,9 @@ To install the headers without building examples and tests:
 ```
 cd stateless++ && make install
 ```
-For Visual Studio 2012 use the generated project files.
+For Visual Studio 2012 use the generated project files to build from within the IDE or on the command line.
 
 Tasks
 ----
- - [x] Basic functionality.
- - [x] Parameterized triggers.
  - [ ] Dynamic destination state selection.
- - [x] Unit tests.
- - [x] Investigate VS2012 build failure.
- - [x] Investigate VS2012 unit test failure.
- - [ ] Investigate Clang unit test failures.
+ - [ ] Investigate Clang 3.1/cygwin 3.2/Ubuntu unit test failures and on/off example failure.

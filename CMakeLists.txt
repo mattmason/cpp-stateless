@@ -35,7 +35,7 @@ message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = " ${CMAKE_CXX_FLAGS_RELWITHDEBI
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 
 if (NOT MSVC)
-  add_definitions(--std=gnu++11)
+  add_definitions(--std=c++11)
 endif (NOT MSVC)
 
 if (MSVC)

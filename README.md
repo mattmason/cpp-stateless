@@ -62,6 +62,7 @@ The library, example code and tests have been built and run on the following pla
     The cmake build script attempts to configure this toolset but the [cmake CMAKE_VS_PLATFORM_TOOLSET variable is currently
     read-only](http://www.cmake.org/Bug/view.php?id=13774#c31828) so you have to manually update the toolset in each project file
     to "Microsoft Visual C++ Compiler Nov 2012 CTP (v120_CTP_Nov2012)". [This PowerShell script](Set-Toolset.ps1) automates the process.
+    If you want to run the script you may need to run PowerShell as Administrator and run '''Set-ExecutionPolicy Unrestricted''' first.
 
 Build and Install
 -----------------

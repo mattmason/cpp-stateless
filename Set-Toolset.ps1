@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Copy this file to your MSVC build directory and execute it to set the VC++ Toolset.
+# Run this script from your MSVC build directory to set the VC++ Toolset.
 $files = Get-ChildItem -name -recurse -include *.vcxproj
 foreach ($file in $files)
 {

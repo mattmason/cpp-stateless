@@ -19,6 +19,7 @@ const char space(' ');
 // - default constructible
 // - assignable and copyable
 // - equality comparable
+// - less than comparable
 state_machine<std::string, char> on_off_switch(off);
 
 // Set up using fluent configuration interface.

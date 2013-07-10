@@ -18,7 +18,7 @@ language: cpp
 
 compiler:
   - clang
-  # - gcc # require >= gcc4.7
+  - gcc
 
 before_script:
   - mkdir build && cd build

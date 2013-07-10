@@ -34,9 +34,13 @@ endif (${CMAKE_SYSTEM_NAME} STREQUAL "Linux" AND ${CMAKE_CXX_COMPILER_ID} STREQU
 message(STATUS "CMAKE_CXX_FLAGS_RELWITHDEBINFO = " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 message(STATUS "CMAKE_BUILD_TYPE = " ${CMAKE_BUILD_TYPE})
 
-if (NOT MSVC)
+if (CYGWIN)
+  add_definitions(--std=gnu++11)
+endif (CYGWIN)
+
+if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   add_definitions(--std=c++11)
-endif (NOT MSVC)
+endif (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 
 if (MSVC)
   # Note that setting the toolset doesn't have any effect at the moment

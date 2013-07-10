@@ -53,9 +53,13 @@ The library, example code and tests have been built and run on the following pla
 
    No known issues.
 
- - Clang 3.1 on Cygwin, 3.2 on Ubuntu
+ - Clang 3.1 on Cygwin
     
     Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
+    
+ - Clang 3.2 on Ubuntu
+ 
+   No known issues.
 
  - Visual Studio 2012 on Windows 7
     
@@ -91,4 +95,3 @@ For Visual Studio 2012 use the generated project files to build from within the 
 Tasks
 ----
  - [ ] Dynamic destination state selection.
- - [x] Investigate Clang 3.1/cygwin 3.2/Ubuntu unit test failures and on/off example failure.

@@ -17,7 +17,9 @@
 language: cpp
 
 compiler:
+  # clang 3.2 currently fails with compile error
   - clang
+  # let's see which version of gcc is being used...
   - gcc
 
 before_script:

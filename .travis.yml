@@ -25,8 +25,10 @@ before_script:
 matrix:
   include:
     - compiler: clang
+      script:
+        - cmake .. && make VERBOSE=1 && make test
     - compiler: gcc
-      env: CC=/usr/bin/gcc-4.7 CXX=/usr/bin/g++-4.7
-    
-script:
-  - cmake .. && make VERBOSE=1 && make test
+      script:
+        - export CC=/usr/bin/gcc-4.7
+        - export CXX=/usr/bin/g++-4.7
+        - cmake .. && make VERBOSE=1 && make test

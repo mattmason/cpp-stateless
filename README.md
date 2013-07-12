@@ -92,6 +92,20 @@ cd stateless++ && make install # sudo may be required for make install
 ```
 For Visual Studio 2012 use the generated project files to build from within the IDE or on the command line.
 
+Contributions
+-------------
+Please feel free to contribute to the project. It's configured to build on [Travis CI](https://travis-ci.org/)
+after each commit so be prepared to receive emails to inform you of the outcome of your commit. Please don't
+exclude yourself from email notifications!
+
+The state machine is currently quite rudimentary when compared to, for example, boost statechart. However, it's
+not intended to provide all the features of UML, or other, state machine specifications. Nevertheless, if you'd
+like to see a feature included, then please, go ahead and implement it. I'm happy to get involved too. In the
+first instance, create an issue or wiki page to share your idea.
+
+One feature that would be useful is states with history. I haven't given it much thought yet, but it shouldn't
+be too hard to implement.
+
 Tasks
 ----
  - [ ] Dynamic destination state selection.

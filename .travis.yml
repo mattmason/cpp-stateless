@@ -36,4 +36,4 @@ matrix:
         - mkdir build && cd build
         - export CC=`which gcc-4.7` && export CXX=`which g++-4.7` && cmake ..
       script:
-        - make VERBOSE=1 && make test
+        - export CC=`which gcc-4.7` && export CXX=`which g++-4.7` && make VERBOSE=1 && make test

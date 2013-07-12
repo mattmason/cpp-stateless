@@ -14,21 +14,26 @@
 
 # Travis CI configuration file.
 
-language: cpp
-
-before_script:
-  - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
-  - sudo apt-get update -qq
-  - sudo apt-get install -qq gcc-4.7
-  - mkdir build && cd build
-
 matrix:
   include:
-    - compiler: clang
+    - language: cpp
+      compiler: clang
+      before_script:
+        - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+        - sudo apt-get update -qq
+        - sudo apt-get install -qq gcc-4.7
+        - mkdir build && cd build
+        - cmake ..
       script:
-        - cmake .. && make VERBOSE=1 && make test
-    - compiler: gcc
+        - make VERBOSE=1 && make test
+
+    - language: cpp
+      compiler: gcc
+      before_script:
+        - sudo add-apt-repository --yes ppa:ubuntu-toolchain-r/test
+        - sudo apt-get update -qq
+        - sudo apt-get install -qq gcc-4.7
+        - mkdir build && cd build
+        - export CC=/usr/bin/gcc-4.7 && export CXX=/usr/bin/g++-4.7 && cmake ..
       script:
-        - export CC=/usr/bin/gcc-4.7
-        - export CXX=/usr/bin/g++-4.7
-        - cmake .. && make VERBOSE=1 && make test
+        - make VERBOSE=1 && make test

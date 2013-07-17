@@ -159,8 +159,9 @@ public:
       {
         return false;
       };
-    TTriggerBehaviour behaviour(trigger, guard, decision);
-    representation_->add_trigger_behaviour(behaviour);
+    auto behaviour = std::make_shared<detail::trigger_behaviour<TState, TTrigger>>(
+      trigger, guard, decision);
+    representation_->add_trigger_behaviour(trigger, behaviour);
     return *this;
   }
 
@@ -194,6 +195,14 @@ public:
     return *this;
   }
 
+  /**
+   * Specify an action that will execute when transitioning into the configured state.
+   *
+   * \param trigger The trigger by which the state must be entered in order for the action to execute.
+   * \param entry_action Action to execute, providing details of the transition.
+   *
+   * \return This configuration object.
+   */
   template<typename... TArgs, typename TCallable>
   state_configuration& on_entry_from(
     const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
@@ -236,6 +245,77 @@ public:
     representation_->set_super_state(super_representation);
     super_representation->add_sub_state(representation_);
     return *this;
+  }
+
+  /**
+   * Accept the specified trigger and transition to the destination state, calculated
+   * dynamically by the supplied function.
+   *
+   * \param trigger The accepted trigger.
+   * \param decision Function to calculate the state that the trigger will cause a transition to.
+   *
+   * \return This configuration object.
+   */
+  template<typename TCallable>
+  state_configuration& permit_dynamic(const TTrigger& trigger, TCallable decision)
+  {
+    return this->template internal_permit_dynamic_if<>(
+      trigger, detail::no_guard, decision);
+  }
+
+  /**
+   * Accept the specified trigger and transition to the destination state, calculated
+   * dynamically by the supplied function.
+   *
+   * \param trigger The accepted trigger.
+   * \param decision Function to calculate the state that the trigger will cause a transition to.
+   *
+   * \return This configuration object.
+   */
+  template<typename... TArgs, typename TCallable>
+  state_configuration& permit_dynamic(
+    const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
+    TCallable decision)
+  {
+    return this->template internal_permit_dynamic_if<TCallable, TArgs...>(
+      trigger->trigger(), detail::no_guard, decision);
+  }
+
+  /**
+   * Accept the specified trigger and transition to the destination state, calculated
+   * dynamically by the supplied function.
+   *
+   * \param trigger The accepted trigger.
+   * \param guard Function that must return true in order for the trigger to be accepted.
+   * \param decision Function to calculate the state that the trigger will cause a transition to.
+   *
+   * \return This configuration object.
+   */
+  template<typename TCallable>
+  state_configuration& permit_dynamic_if(const TTrigger& trigger, const TGuard& guard, TCallable decision)
+  {
+    return this->template internal_permit_dynamic_if<>(
+      trigger, guard, decision);
+  }
+
+  /**
+   * Accept the specified trigger and transition to the destination state, calculated
+   * dynamically by the supplied function.
+   *
+   * \param trigger The accepted trigger.
+   * \param guard Function that must return true in order for the trigger to be accepted.
+   * \param decision Function to calculate the state that the trigger will cause a transition to.
+   *
+   * \return This configuration object.
+   */
+  template<typename... TArgs, typename TCallable>
+  state_configuration& permit_dynamic_if(
+    const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
+    const TGuard& guard,
+    TCallable decision)
+  {
+    return this->template internal_permit_dynamic_if<TCallable, TArgs...>(
+      trigger->trigger(), guard, decision);
   }
 
 private:
@@ -283,8 +363,22 @@ private:
         destination = destination_state;
         return true;
       };
-    TTriggerBehaviour behaviour(trigger, guard, decision);
-    representation_->add_trigger_behaviour(behaviour);
+    auto behaviour = std::make_shared<detail::trigger_behaviour<TState, TTrigger>>(
+      trigger, guard, decision);
+    representation_->add_trigger_behaviour(trigger, behaviour);
+    return *this;
+  }
+
+  template<typename TCallable, typename... TArgs>
+  state_configuration& internal_permit_dynamic_if(
+    const TTrigger& trigger,
+    const TGuard& guard,
+    TCallable decision)
+  {
+    auto behaviour =
+      std::make_shared<detail::dynamic_trigger_behaviour<TState, TTrigger, TArgs...>>(
+        trigger, guard, decision);
+    representation_->add_trigger_behaviour(trigger, behaviour);
     return *this;
   }
 

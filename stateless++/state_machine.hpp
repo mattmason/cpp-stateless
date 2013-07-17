@@ -309,8 +309,8 @@ private:
       }
     }
 
-    auto handler = current_representation()->try_find_handler(trigger);
-    if (handler == nullptr)
+    auto abstract_handler = current_representation()->try_find_handler(trigger);
+    if (abstract_handler == nullptr)
     {
       on_unhandled_trigger_(
         current_representation()->underlying_state(), trigger);
@@ -318,9 +318,27 @@ private:
     }
 
     const auto& source = state();
-
     TState destination;
-    if (handler->results_in_transition_from(source, destination))
+    bool is_transition = false;
+
+    typedef detail::dynamic_trigger_behaviour<TState, TTrigger, TArgs...> TDynamicTriggerBehaviour;
+    typedef detail::trigger_behaviour<TState, TTrigger> TTriggerBehaviour;
+    if (auto handler = std::dynamic_pointer_cast<TDynamicTriggerBehaviour>(abstract_handler))
+    {
+      // A dynamic behaviour is configured, so forward the arguments to it.
+      is_transition = handler->results_in_transition_from(source, destination, args...);
+    }
+    else if (auto handler = std::dynamic_pointer_cast<TTriggerBehaviour>(abstract_handler))
+    {
+      // Fall back to configuration time defined transition.
+      is_transition = handler->results_in_transition_from(source, destination);
+    }
+    else
+    {
+      throw error("Unable to find a suitable handler.");
+    }
+
+    if (is_transition)
     {
       TTransition transition(source, destination, trigger);
       current_representation()->exit(transition);

@@ -249,10 +249,9 @@ TEST(StateRepresentation, WhenLeaving_ThenExitActionsExecuteInOrder)
 TEST(StateRepresentation, WhenTransitionExists_ThenTriggerCanBeFired)
 {
   TSR sr(state::B);
-  sr.add_trigger_behaviour(TTB(
-    trigger::X,
-    [](){ return true; },
-    [](const state&, state&){ return false; }));
+  auto tb = std::make_shared<TTB>(
+    trigger::X, [](){ return true; }, [](const state&, state&){ return false; });
+  sr.add_trigger_behaviour(trigger::X, tb);
 
   ASSERT_TRUE(sr.can_handle(trigger::X));
     
@@ -268,10 +267,9 @@ TEST(StateRepresentation, WhenTransitionDoesNotExist_ThenTriggerCannotBeFired)
 TEST(StateRepresentation, WhenTransitionExistsInSupersate_ThenTriggerCanBeFired)
 {
   TSR sr_b(state::B);
-  sr_b.add_trigger_behaviour(TTB(
-    trigger::X,
-    [](){ return true; },
-    [](const state&, state&){ return false; }));    
+  auto tb = std::make_shared<TTB>(
+    trigger::X, [](){ return true; }, [](const state&, state&){ return false; });
+  sr_b.add_trigger_behaviour(trigger::X, tb);
   TSR sub(state::C);
   sub.set_super_state(&sr_b);
   sr_b.add_sub_state(&sub);

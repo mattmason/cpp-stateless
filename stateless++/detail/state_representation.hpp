@@ -58,7 +58,7 @@ class state_representation
 {
 public:
   typedef transition<TState, TTrigger> TTransition;
-  typedef trigger_behaviour<TState, TTrigger> TTriggerBehaviour;
+  typedef std::shared_ptr<abstract_trigger_behaviour> TTriggerBehaviour;
   typedef std::shared_ptr<abstract_entry_action> TEntryAction;
   typedef std::function<void(const TTransition&)> TExitAction;
 
@@ -76,7 +76,7 @@ public:
     return try_find_handler(trigger) != nullptr;
   }
 
-  const TTriggerBehaviour* try_find_handler(const TTrigger& trigger) const
+  const TTriggerBehaviour try_find_handler(const TTrigger& trigger) const
   {
     auto handler = try_find_local_hander(trigger);
     if (handler == nullptr && super_state_ != nullptr)
@@ -152,10 +152,9 @@ public:
     }
   }
 
-  void add_trigger_behaviour(const TTriggerBehaviour& trigger_behaviour)
+  void add_trigger_behaviour(const TTrigger& trigger, const TTriggerBehaviour trigger_behaviour)
   {
-    trigger_behaviours_[trigger_behaviour.trigger()]
-      .push_back(trigger_behaviour);
+    trigger_behaviours_[trigger].push_back(trigger_behaviour);
   }
 
   const state_representation& super_state() const
@@ -207,7 +206,7 @@ public:
     {
       for (auto& trigger_behaviour : trigger_behaviour_list.second)
       {
-        if (trigger_behaviour.is_condition_met())
+        if (trigger_behaviour->is_condition_met())
         {
           local.insert(trigger_behaviour_list.first);
           break;
@@ -229,9 +228,9 @@ public:
   }
 
 private:
-  const TTriggerBehaviour* try_find_local_hander(const TTrigger& trigger) const
+  const TTriggerBehaviour try_find_local_hander(const TTrigger& trigger) const
   {
-    const TTriggerBehaviour* result = nullptr;
+    TTriggerBehaviour result = nullptr;
 
     const auto& candidates = trigger_behaviours_.find(trigger);
     if (candidates == trigger_behaviours_.end())
@@ -241,7 +240,7 @@ private:
 
     for (auto& candidate : candidates->second)
     {
-      if (candidate.is_condition_met())
+      if (candidate->is_condition_met())
       {
         if (result != nullptr)
         {
@@ -250,7 +249,7 @@ private:
             "configured from the current state. Guard "
             "clauses must be mutually exclusive.");
         }
-        result = &candidate;
+        result = candidate;
       }
     }
 

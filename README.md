@@ -57,7 +57,7 @@ The library, example code and tests have been built and run on the following pla
     
     Use the patch attached to [this bug report](http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=678033) to allow use of --std=gnu++11.
     
- - Clang 3.2 on Ubuntu
+ - Clang 3.2 on Ubuntu 12.04
  
    No known issues.
 
@@ -108,4 +108,4 @@ be too hard to implement.
 
 Tasks
 ----
- - [ ] Dynamic destination state selection.
+ - [x] Dynamic destination state selection.

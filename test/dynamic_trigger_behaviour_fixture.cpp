@@ -14,21 +14,57 @@
  * limitations under the License.
  */
 
+#include <stateless++/state_machine.hpp>
+
+#include <state.hpp>
+#include <trigger.hpp>
+
 #include <gtest/gtest.h>
 
+using namespace stateless;
+using namespace stateless::detail;
 using namespace testing;
 
 namespace
 {
 
-TEST(DynamicTriggerBehaviour, DISABLED_DestinationStateIsDynamic)
+#ifdef _WIN32
+typedef state_machine<state, trigger> TStateMachine;
+#else
+using TStateMachine = state_machine<state, trigger>;
+#endif
+
+TEST(DynamicTriggerBehaviour, WhenPermitDynamic_ThenDestinationStateIsDynamic)
 {
-  // TODO This isn't implemented yet.
+  TStateMachine sm(state::A);
+  sm.configure(state::A)
+    .permit_dynamic(trigger::X, [](){ return state::B; });
+
+  sm.fire(trigger::X);
+
+  EXPECT_EQ(state::B, sm.state());
 }
 
-TEST(DynamicTriggerBehaviour, DISABLED_DestinationStateIsCalculatedBasedOnTriggerParameters)
+TEST(DynamicTriggerBehaviour, WhenTriggerHasParameters_ThenTheyAreUsedToCalculateDestinationState)
 {
-  // TODO This isn't implemented yet.
+#if 0
+  var sm = new StateMachine<State, Trigger>(State.A);
+  var trigger = sm.SetTriggerParameters<int>(Trigger.X);
+  sm.Configure(State.A)
+      .PermitDynamic(trigger, i => i == 1 ? State.B : State.C);
+
+  sm.Fire(trigger, 1);
+
+  Assert.AreEqual(State.B, sm.State);
+#endif
+  TStateMachine sm(state::A);
+  auto pt = sm.set_trigger_parameters<int>(trigger::X);
+  sm.configure(state::A)
+    .permit_dynamic(pt, [](const int i){ return i == 1 ? state::B : state::C; });
+
+  sm.fire(pt, 1);
+
+  EXPECT_EQ(state::B, sm.state());
 }
 
 }

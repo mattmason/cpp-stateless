@@ -94,7 +94,7 @@ For Visual Studio 2012 use the generated project files to build from within the 
 
 Contributions
 -------------
-Please feel free to contribute to the project. It's configured to build on [Travis CI](https://travis-ci.org/)
+Please feel free to contribute to the project. It's configured to build on [drone.io](https://drone.io/github.com/mattmason/cpp-stateless)
 after each commit so be prepared to receive emails to inform you of the outcome of your commit. Please don't
 exclude yourself from email notifications!
 

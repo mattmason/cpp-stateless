@@ -61,6 +61,10 @@ The library, example code and tests have been built and run on the following pla
  
    No known issues.
 
+ - Clang Apple LLVM version 4.2 on OS X, Darwin 12.4.0
+
+   No known issues.
+ 
  - Visual Studio 2012 on Windows 7
     
     Requires the [Microsoft Visual C++ Compiler Nov 2012 CTP Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).

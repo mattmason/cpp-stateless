@@ -22,7 +22,7 @@ endif (MSVC)
 
 file(GLOB_RECURSE sources *.cpp)
 include_directories(${stateless++_SOURCE_DIR} . ./gtest-1.6.0)
-add_executable(test_stateless++ ${sources} ./gtest-1.6.0/gtest-all.cc)
+add_executable(test_stateless++ ${sources} ./gtest-1.6.0/gtest/gtest-all.cc)
 if (NOT MSVC)
   target_link_libraries(test_stateless++ pthread)
 endif (NOT MSVC)

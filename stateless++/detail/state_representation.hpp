@@ -261,14 +261,9 @@ private:
   {
     for (auto& action : entry_actions_)
     {
-      auto ea = std::dynamic_pointer_cast<entry_action<TTransition, TArgs...>>(action);
-      if (ea != nullptr)
+      if (auto ea = std::dynamic_pointer_cast<entry_action<TTransition, TArgs...>>(action))
       {
         ea->execute(transition, args...);
-      }
-      else
-      {
-        throw error("Invalid entry action");
       }
     }
   }

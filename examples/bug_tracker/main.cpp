@@ -25,12 +25,12 @@ int main(int argc, char* argv[])
 {
   bug bug("Incorrect stock count");
 
-    bug.assign("Joe");
-    bug.defer();
-    bug.assign("Harry");
-    bug.assign("Fred");
+  bug.assign("Joe");
+  bug.defer();
+  bug.assign("Harry");
+  bug.assign("Fred");
   bug.resolve("Mike");
-    bug.close();
+  bug.close();
 
   std::cout << "Press enter to quit..." << std::endl;
   char c;

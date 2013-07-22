@@ -38,6 +38,11 @@ if (CYGWIN)
   add_definitions(--std=gnu++11)
 endif (CYGWIN)
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+   add_definitions(--std=c++11 --stdlib=libc++ -DGTEST_USE_OWN_TR1_TUPLE)
+   set (CMAKE_EXE_LINKER_FLAGS -lc++)
+endif (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+
 if (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   add_definitions(--std=c++11)
 endif (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")

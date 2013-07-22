@@ -61,6 +61,10 @@ The library, example code and tests have been built and run on the following pla
  
    No known issues.
 
+ - Clang Apple LLVM version 4.2 on OS X, Darwin 12.4.0
+
+   No known issues.
+ 
  - Visual Studio 2012 on Windows 7
     
     Requires the [Microsoft Visual C++ Compiler Nov 2012 CTP Toolset](http://www.microsoft.com/en-gb/download/details.aspx?id=35515).
@@ -73,8 +77,7 @@ Build and Install
 -----------------
 The library itself is header file only.
 The examples are built by default but this can be skipped if you just want to install the library header files.
-The unit tests depend on [GoogleTest](https://code.google.com/p/googletest/) version 1.6.0, but only are only built
-if the gtest library is found on the target system.
+The unit tests use [GoogleTest](https://code.google.com/p/googletest/) version 1.6.0. The project includes the fused gtest code so no additional dependencies need to be installed.
 
 The instructions for UNIX-like platforms are:
 ```

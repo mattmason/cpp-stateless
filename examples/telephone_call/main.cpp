@@ -22,7 +22,10 @@
 #include <iostream>
 #include <string>
 
-enum state
+namespace
+{
+
+enum class state
 {
   off_hook,
   ringing,
@@ -31,7 +34,22 @@ enum state
   phone_destroyed
 };
 
-enum trigger
+const char* state_name[] = 
+{
+  "off_hook",
+  "ringing",
+  "connected",
+  "on_hold",
+  "phone_destroyed"
+};
+
+std::ostream& operator<<(std::ostream& os, const state& s)
+{
+  os << state_name[(int)s];
+  return os;
+}
+
+enum class trigger
 {
   call_dialled,
   hung_up,
@@ -42,10 +60,44 @@ enum trigger
   phone_hurled_against_wall
 };
 
-using namespace stateless;
+const char* trigger_name[] = 
+{
+  "call_dialled",
+  "hung_up",
+  "call_connected",
+  "left_message",
+  "placed_on_hold",
+  "taken_off_hold",
+  "phone_hurled_against_wall"
+};
+
+std::ostream& operator<<(std::ostream& os, const trigger& t)
+{
+  os << trigger_name[(int)t];
+  return os;
+}
+
+}
+
+namespace stateless
+{
+
+template<> struct print_state<state>
+{
+  static void print(std::ostream& os, const state& s) { os << s; }
+};
+
+template<> struct print_trigger<trigger>
+{
+  static void print(std::ostream& os, const trigger& t) { os << t; }
+};
+
+}
 
 namespace
 {
+
+using namespace stateless;
 
 #if _WIN32
 using std::put_time;
@@ -73,33 +125,9 @@ void stop_call_timer()
   std::cout << "Call ended at " << put_time(std::gmtime(&now), "%c") << std::endl;
 }
 
-std::ostream& operator<<(std::ostream& os, const state_machine<state, trigger>& sm)
-{
-  static const char* state_name[] = 
-  {
-    "off_hook",
-    "ringing",
-    "connected",
-    "on_hold",
-    "phone_destroyed"
-  };
-  os << "phone call in state [" << state_name[sm.state()] << "]";
-  return os;
-}
-
 void fire(state_machine<state, trigger>& sm, const trigger& trigger, std::ostream& os = std::cout)
 {
-  static const char* trigger_name[] = 
-  {
-    "call_dialled",
-    "hung_up",
-    "call_connected",
-    "left_message",
-    "placed_on_hold",
-    "taken_off_hold",
-    "phone_hurled_against_wall"
-  };
-  os << "Firing [" << trigger_name[trigger] << "]" << std::endl;
+  os << "Firing [" << trigger_name[(int)trigger] << "]" << std::endl;
   sm.fire(trigger);
 }
 

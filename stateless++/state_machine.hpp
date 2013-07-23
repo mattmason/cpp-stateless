@@ -21,7 +21,10 @@
 #include <map>
 #include <memory>
 #include <set>
+#include <sstream>
 
+#include "print_state.hpp"
+#include "print_trigger.hpp"
 #include "state_configuration.hpp"
 #include "trigger_with_parameters.hpp"
 
@@ -218,6 +221,28 @@ public:
     return current_representation()->permitted_triggers();
   }
 
+  /**
+   * A human readable representation of the state machine.
+   *
+   * \return A description of the current state and permitted triggers.
+   */
+  std::string print() const
+  {
+    std::ostringstream oss;
+    print(oss);
+    return oss.str();
+  }
+
+  /**
+   * Stream output operator.
+   */
+  friend inline std::ostream& operator<<(
+    std::ostream& os, const stateless::state_machine<TState, TTrigger>& sm)
+  {
+    sm.print(os);
+    return os;
+  }
+
 private:
   /**
    * Wrapper class for internal state storage.
@@ -351,6 +376,27 @@ private:
     }
   }
 
+  /// Implementation for public print and stream operator.
+  void print(std::ostream& os) const
+  {
+    auto print_permitted_triggers =
+      [&](const std::set<TTrigger>& pts)
+      {
+        bool first = true;
+        for (auto& pt : pts)
+        {
+          if (!first) os << ", ";
+          first = false;
+          print_trigger<TTrigger>::print(os, pt);
+        }
+      };
+    os << "state_machine { state = ";
+    print_state<TState>::print(os, state());
+    os << ", permitted triggers = { ";
+    print_permitted_triggers(permitted_triggers());
+    os << " } }";
+  }
+
   /**
    * Mapping from state to representation.
    * There is exactly one representation per configured state.
@@ -376,3 +422,4 @@ private:
 }
 
 #endif // STATELESS_STATE_MACHINE_HPP
+

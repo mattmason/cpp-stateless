@@ -48,6 +48,26 @@ std::ostream& operator<<(std::ostream& os, const trigger& t)
   return os;
 }
 
+}
+
+namespace stateless
+{
+
+template<> struct print_state<state>
+{
+  static void print(std::ostream& os, const state& s) { os << s; }
+};
+
+template<> struct print_trigger<trigger>
+{
+  static void print(std::ostream& os, const trigger& t) { os << t; }
+};
+
+}
+
+namespace
+{
+
 class motor
 {
 public:
@@ -110,16 +130,16 @@ public:
     sm_.fire(set_speed_trigger_, speed);
   }
 
-  void print(std::ostream& os) const
-  {
-    os << print();
-  }
-
   std::string print() const
   {
     std::ostringstream oss;
-    oss << "Motor in state [" << sm_.state() << "] speed = " << speed_;
+    print(oss);
     return oss.str();
+  }
+
+  void print(std::ostream& os) const
+  {
+    os << "Motor " << sm_ << " speed = " << speed_;
   }
 
 private:

@@ -53,15 +53,11 @@ std::ostream& operator<<(std::ostream& os, const trigger& t)
 namespace stateless
 {
 
-template<> struct print_state<state>
-{
-  static void print(std::ostream& os, const state& s) { os << s; }
-};
+template<> void print_state<state>(std::ostream& os, const state& s)
+{ os << s; }
 
-template<> struct print_trigger<trigger>
-{
-  static void print(std::ostream& os, const trigger& t) { os << t; }
-};
+template<> void print_trigger<trigger>(std::ostream& os, const trigger& t)
+{ os << t; }
 
 }
 

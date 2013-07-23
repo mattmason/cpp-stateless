@@ -17,6 +17,8 @@
 #ifndef STATELESS_PRINT_TRIGGER_HPP
 #define STATELESS_PRINT_TRIGGER_HPP
 
+#include <type_traits>
+
 namespace stateless
 {
 
@@ -26,13 +28,28 @@ namespace stateless
  * Specialize to provide more informative printing
  * of a state machine's permitted triggers.
  */
-template<typename TTrigger> struct print_trigger
-{
-  static void print(std::ostream& os, const TTrigger& t)
-  {
-    os << "TTrigger@" << &t;
-  }
-};
+template<typename TTrigger>
+inline void print_trigger(std::ostream& os, const TTrigger& t)
+{ os << "TTrigger@" << &t; }
+
+#ifndef STATELESS_NO_PRETTY_PRINT
+
+/**
+ * Specialize trigger printing for string.
+ */
+template<typename TTrigger>
+inline void print_trigger(
+  std::ostream& os,
+  const typename std::enable_if<std::is_convertible<TTrigger, std::string>::value, std::string>::type& t)
+{ os << t; }
+
+/**
+ * Specialize trigger printing for char.
+ */
+template<> inline void print_trigger<char>(std::ostream& os, const char& t)
+{ os << '\'' << t << '\''; }
+
+#endif // STATELESS_NO_PRETTY_PRINT
 
 }
 

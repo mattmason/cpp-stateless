@@ -17,6 +17,8 @@
 #ifndef STATELESS_PRINT_STATE_HPP
 #define STATELESS_PRINT_STATE_HPP
 
+#include <type_traits>
+
 namespace stateless
 {
 
@@ -26,13 +28,28 @@ namespace stateless
  * Specialize to provide more informative printing
  * of a state machine's current state.
  */
-template<typename TState> struct print_state
-{
-  static void print(std::ostream& os, const TState& s)
-  {
-    os << "TState@" << &s;
-  }
-};
+template<typename TState>
+inline void print_state(std::ostream& os, const TState& s)
+{ os << "TState@" << &s; }
+
+#ifndef STATELESS_NO_PRETTY_PRINT
+
+/**
+ * Specialize state printing for string.
+ */
+template<typename TState>
+inline void print_state(
+  std::ostream& os,
+  const typename std::enable_if<std::is_convertible<TState, std::string>::value, std::string>::type& s)
+{ os << s; }
+
+/**
+ * Specialize state printing for char.
+ */
+template<> inline void print_state<char>(std::ostream& os, const char& s)
+{ os << '\'' << s << '\''; }
+
+#endif // STATELESS_NO_PRETTY_PRINT
 
 }
 

@@ -387,11 +387,11 @@ private:
         {
           if (!first) os << ", ";
           first = false;
-          print_trigger<TTrigger>::print(os, pt);
+          print_trigger<TTrigger>(os, pt);
         }
       };
     os << "state_machine { state = ";
-    print_state<TState>::print(os, state());
+    print_state<TState>(os, state());
     os << ", permitted triggers = { ";
     print_permitted_triggers(permitted_triggers());
     os << " } }";

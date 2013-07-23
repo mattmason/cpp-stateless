@@ -44,10 +44,22 @@ inline void print_state(
 { os << s; }
 
 /**
- * Specialize state printing for char.
+ * Specialize state printing for enum types.
  */
-template<> inline void print_state<char>(std::ostream& os, const char& s)
-{ os << '\'' << s << '\''; }
+template<typename TState>
+inline void print_state(
+  std::ostream& os,
+  const typename std::enable_if<std::is_enum<TState>::value, TState>::type& s)
+{ os << static_cast<typename std::underlying_type<TState>::type>(s); }
+
+/**
+ * Specialize state printing for arithmetic types.
+ */
+template<typename TState>
+inline void print_state(
+  std::ostream& os,
+  const typename std::enable_if<std::is_arithmetic<TState>::value, TState>::type& s)
+{ os << s; }
 
 #endif // STATELESS_NO_PRETTY_PRINT
 

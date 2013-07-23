@@ -44,10 +44,22 @@ inline void print_trigger(
 { os << t; }
 
 /**
- * Specialize trigger printing for char.
+ * Specialize trigger printing for enum types.
  */
-template<> inline void print_trigger<char>(std::ostream& os, const char& t)
-{ os << '\'' << t << '\''; }
+template<typename TTrigger>
+inline void print_trigger(
+  std::ostream& os,
+  const typename std::enable_if<std::is_enum<TTrigger>::value, TTrigger>::type& t)
+{ os << static_cast<typename std::underlying_type<TTrigger>::type>(t); }
+
+/**
+ * Specialize trigger printing for arithmetic types.
+ */
+template<typename TTrigger>
+inline void print_trigger(
+  std::ostream& os,
+  const typename std::enable_if<std::is_arithmetic<TTrigger>::value, TTrigger>::type& t)
+{ os << t; }
 
 #endif // STATELESS_NO_PRETTY_PRINT
 

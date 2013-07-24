@@ -17,6 +17,7 @@
 #ifndef STATELESS_PRINT_TRIGGER_HPP
 #define STATELESS_PRINT_TRIGGER_HPP
 
+#include <memory>
 #include <type_traits>
 
 namespace stateless
@@ -30,7 +31,7 @@ namespace stateless
  */
 template<typename TTrigger>
 inline void print_trigger(std::ostream& os, const TTrigger& t)
-{ os << "TTrigger@" << &t; }
+{ os << "TTrigger@" << std::addressof(t); }
 
 #ifndef STATELESS_NO_PRETTY_PRINT
 

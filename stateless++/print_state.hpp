@@ -17,6 +17,7 @@
 #ifndef STATELESS_PRINT_STATE_HPP
 #define STATELESS_PRINT_STATE_HPP
 
+#include <memory>
 #include <type_traits>
 
 namespace stateless
@@ -30,7 +31,7 @@ namespace stateless
  */
 template<typename TState>
 inline void print_state(std::ostream& os, const TState& s)
-{ os << "TState@" << &s; }
+{ os << "TState@" << std::addressof(s); }
 
 #ifndef STATELESS_NO_PRETTY_PRINT
 

@@ -123,7 +123,7 @@ void stop_call_timer()
 
 void fire(state_machine<state, trigger>& sm, const trigger& trigger, std::ostream& os = std::cout)
 {
-  os << "Firing [" << trigger_name[(int)trigger] << "]" << std::endl;
+  os << "Firing [" << trigger << "]" << std::endl;
   sm.fire(trigger);
 }
 

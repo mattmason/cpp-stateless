@@ -76,12 +76,10 @@ public:
       .permit(trigger::start, state::started);
 
     sm_.configure(state::stopped)
+      .on_entry([=](const TTransition&) { speed_ = 0; })
       .permit(trigger::halt, state::idle);
 
     sm_.configure(state::started)
-      .on_entry_from(
-        set_speed_trigger_,
-        [=](const TTransition& t, int speed) { speed_ = speed; })
       .permit(trigger::set_speed, state::running)
       .permit(trigger::stop, state::stopped);
 
@@ -116,7 +114,6 @@ public:
 
   void stop()
   {
-    set_speed(0);
     sm_.fire(trigger::stop);
     sm_.fire(trigger::halt);
   }

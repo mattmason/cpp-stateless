@@ -97,7 +97,7 @@ public:
   void add_entry_action(const TTrigger& trigger, TCallable action)
   {
     auto wrapper =
-      [=](const TTransition& transition, TArgs... args)
+      [=](const TTransition& transition, TArgs&&... args)
       {
         if (transition.trigger() == trigger)
         {
@@ -106,7 +106,7 @@ public:
           typedef typename std::remove_cv<TCallable>::type TCVRemoved;
           ((TCVRemoved)(action))(transition, args...);
 #else
-          action(transition, args...);
+          action(transition, std::forward<TArgs>(args)...);
 #endif
         }
       };

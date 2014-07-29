@@ -108,9 +108,9 @@ public:
     , decision_(decision)
   {}
 
-  bool results_in_transition_from(const TState& source, TState& destination, TArgs... args) const
+  bool results_in_transition_from(const TState& source, TState& destination, TArgs&&... args) const
   {
-    destination = decision_(args...);
+    destination = decision_(std::forward<TArgs>(args)...);
     return true;
   }
 

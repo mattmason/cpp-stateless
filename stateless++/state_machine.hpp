@@ -141,7 +141,7 @@ public:
     const std::shared_ptr<trigger_with_parameters<TTrigger, TArgs...>>& trigger,
     TArgs... args)
   {
-    internal_fire(trigger->trigger(), args...);
+    internal_fire(trigger->trigger(), std::move(args)...);
   }
 
   /**
@@ -319,7 +319,7 @@ private:
 
   /// Implementation of state transition given a trigger.
   template<typename... TArgs>
-  void internal_fire(const TTrigger& trigger, TArgs... args)
+  void internal_fire(const TTrigger& trigger, TArgs&&... args)
   {
     auto abstract_configuration = trigger_configuration_.find(trigger);
     if (abstract_configuration != trigger_configuration_.end())
@@ -351,7 +351,7 @@ private:
     if (auto handler = std::dynamic_pointer_cast<TDynamicTriggerBehaviour>(abstract_handler))
     {
       // A dynamic behaviour is configured, so forward the arguments to it.
-      is_transition = handler->results_in_transition_from(source, destination, args...);
+      is_transition = handler->results_in_transition_from(source, destination, std::forward<TArgs>(args)...);
     }
     else if (auto handler = std::dynamic_pointer_cast<TTriggerBehaviour>(abstract_handler))
     {
@@ -368,7 +368,7 @@ private:
       TTransition transition(source, destination, trigger);
       current_representation()->exit(transition);
       set_state(transition.destination());
-      current_representation()->enter(transition, args...);
+      current_representation()->enter(transition, std::forward<TArgs>(args)...);
       if (on_transition_)
       {
         on_transition_(transition);

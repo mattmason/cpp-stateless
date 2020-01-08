@@ -97,7 +97,7 @@ public:
   void add_entry_action(const TTrigger& trigger, TCallable action)
   {
     auto wrapper =
-      [=](const TTransition& transition, TArgs... args)
+      [=](const TTransition& transition, TArgs&&... args)
       {
         if (transition.trigger() == trigger)
         {
@@ -106,7 +106,7 @@ public:
           typedef typename std::remove_cv<TCallable>::type TCVRemoved;
           ((TCVRemoved)(action))(transition, args...);
 #else
-          action(transition, args...);
+          action(transition, std::forward<TArgs>(args)...);
 #endif
         }
       };
@@ -120,19 +120,19 @@ public:
   }
 
   template<typename... TArgs>
-  void enter(const TTransition& transition, TArgs... args) const
+  void enter(const TTransition& transition, TArgs&&... args) const
   {
     if (transition.is_reentry())
     {
-      execute_entry_actions(transition, args...);
+      execute_entry_actions(transition, std::forward<TArgs>(args)...);
     }
     else if (!includes(transition.source()))
     {
       if (super_state_ != nullptr)
       {
-        super_state_->enter(transition, args...);
+        super_state_->enter(transition, std::forward<TArgs>(args)...);
       }
-      execute_entry_actions(transition, args...);
+      execute_entry_actions(transition, std::forward<TArgs>(args)...);
     }
   }
 
@@ -257,13 +257,13 @@ private:
   }
 
   template<typename... TArgs>
-  void execute_entry_actions(const TTransition& transition, TArgs... args) const
+  void execute_entry_actions(const TTransition& transition, TArgs&&... args) const
   {
     for (auto& action : entry_actions_)
     {
       if (auto ea = std::dynamic_pointer_cast<entry_action<TTransition, TArgs...>>(action))
       {
-        ea->execute(transition, args...);
+        ea->execute(transition, std::forward<TArgs>(args)...);
       }
     }
   }
